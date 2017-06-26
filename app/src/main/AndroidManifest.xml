@@ -19,7 +19,8 @@
         <activity android:name=".LoginPage" />
         <activity android:name=".HomePage" />
         <activity android:name=".RegisterPage" />
-        <activity android:name=".HandRequest"></activity>
+        <activity android:name=".HandRequest" />
+        <activity android:name=".MyProfile"></activity>
     </application>
 
 </manifest>
