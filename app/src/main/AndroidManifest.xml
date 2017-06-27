@@ -20,7 +20,11 @@
         <activity android:name=".HomePage" />
         <activity android:name=".RegisterPage" />
         <activity android:name=".HandRequest" />
-        <activity android:name=".MyProfile"></activity>
+        <activity android:name=".MyProfile" />
+        <activity android:name=".FriednsList" />
+        <activity android:name=".GiveHand" />
+        <activity android:name=".Messenger" />
+        <activity android:name=".FeedbackArea"></activity>
     </application>
 
 </manifest>
