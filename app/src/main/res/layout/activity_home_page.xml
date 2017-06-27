@@ -104,7 +104,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@drawable/friends" />
+                        android:background="@drawable/friends"
+                        android:onClick="clickFriendsList" />
 
                     <Button
                         android:id="@+id/btnNotification"
@@ -124,7 +125,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@drawable/myprofile" />
+                        android:background="@drawable/myprofile"
+                        android:onClick="clickMyProfile" />
 
                     <Button
                         android:id="@+id/button4"

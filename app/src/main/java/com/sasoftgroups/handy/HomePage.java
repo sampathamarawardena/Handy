@@ -1,12 +1,10 @@
 package com.sasoftgroups.handy;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 
 public class HomePage extends AppCompatActivity {
 
@@ -20,10 +18,8 @@ public class HomePage extends AppCompatActivity {
     }
 
     public void btnNeedHand(View view) {
-
         Intent needHand = new Intent(HomePage.this, HandRequest.class);
         startActivity(needHand);
-
     }
 
     public void messegButtonImage(){
@@ -72,7 +68,7 @@ public class HomePage extends AppCompatActivity {
 
     public void notificationButtonImage(){
         Button notification = (Button)findViewById(R.id.btnNotification);
-        int notifi = 6;
+        int notifi = 50;
 
         if (notifi == 1){
             notification.setBackgroundResource(R.drawable.notificaton1);
@@ -113,4 +109,13 @@ public class HomePage extends AppCompatActivity {
     }
 
 
+    public void clickMyProfile(View view) {
+        Intent myProfile = new Intent(HomePage.this, MyProfile.class);
+        startActivity(myProfile);
+    }
+
+    public void clickFriendsList(View view) {
+        Intent FriendsList = new Intent(HomePage.this, FriednsList.class);
+        startActivity(FriendsList);
+    }
 }
