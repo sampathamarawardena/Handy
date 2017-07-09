@@ -7,13 +7,23 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 
 public class RegisterPage extends AppCompatActivity {
+
+    EditText name, uname, email, phone, password;
+    String str_name, str_uname, str_email, str_phone, str_password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_page);
+
+        name = (EditText) findViewById(R.id.edtName);
+        uname = (EditText) findViewById(R.id.edtUsername);
+        email = (EditText) findViewById(R.id.edtEmail);
+        phone = (EditText) findViewById(R.id.edtPhone);
+        password = (EditText) findViewById(R.id.edtPassword);
     }
 
     public void btnLogin(View view) {
@@ -22,6 +32,15 @@ public class RegisterPage extends AppCompatActivity {
     }
 
     public void btnCreateAccount(View view) {
+        str_name = name.getText().toString();
+        str_uname = uname.getText().toString();
+        str_email = email.getText().toString();
+        str_phone = phone.getText().toString();
+        str_password = password.getText().toString();
+        String type = "register";
+        BackgroundWorker backgroundWorker = new BackgroundWorker(this);
+        backgroundWorker.execute(type, str_name, str_uname, str_email, str_phone, str_password);
+
         AlertDialog.Builder builder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
