@@ -1,29 +1,42 @@
 package com.sasoftgroups.handy;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RegisterPage extends AppCompatActivity {
 
     EditText name, uname, email, phone, password;
-    String str_name, str_uname, str_email, str_phone, str_password;
+     String str_name, str_uname, str_email, str_phone, str_password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_page);
 
-        name = (EditText) findViewById(R.id.edtName);
-        uname = (EditText) findViewById(R.id.edtUsername);
-        email = (EditText) findViewById(R.id.edtEmail);
-        phone = (EditText) findViewById(R.id.edtPhone);
-        password = (EditText) findViewById(R.id.edtPassword);
+        name = (EditText) findViewById(R.id.edtRegName);
+        uname = (EditText) findViewById(R.id.edtRegUname);
+        email = (EditText) findViewById(R.id.edtRegEmail);
+        phone = (EditText) findViewById(R.id.edtRegPhone);
+        password = (EditText) findViewById(R.id.edtRegPassword);
+
     }
 
     public void btnLogin(View view) {
@@ -31,32 +44,42 @@ public class RegisterPage extends AppCompatActivity {
         startActivity(login);
     }
 
-    public void btnCreateAccount(View view) {
+    public void btnCreateAccount(View view) throws JSONException {
+        RegisterUser();
+    }
+
+    private void RegisterUser() throws JSONException {
         str_name = name.getText().toString();
         str_uname = uname.getText().toString();
         str_email = email.getText().toString();
         str_phone = phone.getText().toString();
         str_password = password.getText().toString();
-        String type = "register";
-        BackgroundWorker backgroundWorker = new BackgroundWorker(this);
-        backgroundWorker.execute(type, str_name, str_uname, str_email, str_phone, str_password);
 
-        AlertDialog.Builder builder;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
-        } else {
-            builder = new AlertDialog.Builder(this);
-        }
-        builder.setTitle("Complete")
-                .setMessage("Your Account is successfully created. Please check email and follow the steps.  Thanks")
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent login = new Intent(RegisterPage.this, LoginPage.class);
-                        startActivity(login);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, config.REGISTER_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(RegisterPage.this,response,Toast.LENGTH_LONG).show();
                     }
-                })
-                .setIcon(android.R.drawable.ic_dialog_info)
-                .show();
-
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(RegisterPage.this,error.toString(),Toast.LENGTH_LONG).show();
+                    }
+                }){
+        @Override
+        protected Map<String,String> getParams() throws AuthFailureError {
+            Map<String,String> params = new HashMap<String, String>();
+            params.put("str_name", str_name);
+            params.put("str_uname",str_uname);
+            params.put("str_email", str_email);
+            params.put("str_phone", str_phone);
+            params.put("str_password",str_password);
+            return params;
+        }
+    };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
     }
 }

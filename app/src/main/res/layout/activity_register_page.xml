@@ -55,7 +55,7 @@
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/edtName"
+                    android:id="@+id/edtRegName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -73,7 +73,7 @@
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/edtEmail"
+                    android:id="@+id/edtRegEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -91,7 +91,7 @@
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/edtPhone"
+                    android:id="@+id/edtRegPhone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -109,7 +109,7 @@
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/edtUsername"
+                    android:id="@+id/edtRegUname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -127,7 +127,7 @@
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/edtPassword"
+                    android:id="@+id/edtRegPassword"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -145,7 +145,7 @@
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/edtConfirmPassword"
+                    android:id="@+id/edtRegCPass"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

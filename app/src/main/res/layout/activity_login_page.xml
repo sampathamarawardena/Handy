@@ -62,13 +62,13 @@
                     android:orientation="horizontal">
 
                     <Button
-                        android:id="@+id/button"
+                        android:id="@+id/btn_Login"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@color/colorPrimaryDark"
-                        android:onClick="btnLogin"
                         android:text="Login"
+                        android:onClick="btn_Login"
                         android:textColor="@android:color/white"
                         android:textSize="16sp"
                         android:textStyle="bold" />
