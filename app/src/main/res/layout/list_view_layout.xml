@@ -13,7 +13,7 @@
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="20dp"
-            android:layout_height="50dp"
+            android:layout_height="70dp"
             android:layout_weight="1"
             app:srcCompat="@mipmap/ic_launcher_round" />
 
@@ -30,15 +30,30 @@
                 android:text="Name Here"
                 android:textColor="@android:color/black"
                 android:textColorHint="@android:color/black"
-                android:textColorLink="@android:color/black" />
+                android:textColorLink="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/lblUserID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="TextView"
+                android:textSize="8sp"
+                android:visibility="invisible" />
 
         </LinearLayout>
 
         <Button
-            android:id="@+id/button8"
+            android:id="@+id/btn_AddFriend"
             android:layout_width="wrap_content"
-            android:layout_height="33dp"
-            android:text="Add" />
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimaryDark"
+            android:onClick="onClick_SendFRequest"
+            android:text="Add"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
 
     </LinearLayout>
 

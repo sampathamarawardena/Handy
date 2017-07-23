@@ -28,13 +28,11 @@ public class HandyUsersCustomListView extends ArrayAdapter<String>{
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
         View listViewItem = inflater.inflate(R.layout.list_view_layout, null, true);
-        TextView textViewId = (TextView) listViewItem.findViewById(R.id.textViewId);
-        TextView textViewName = (TextView) listViewItem.findViewById(R.id.textViewName);
-        TextView textViewEmail = (TextView) listViewItem.findViewById(R.id.textViewEmail);
+        TextView textViewId = (TextView) listViewItem.findViewById(R.id.lblUserID);
+        TextView textViewName = (TextView) listViewItem.findViewById(R.id.lblfriendName);
 
         textViewId.setText(ids[position]);
         textViewName.setText(names[position]);
-        textViewEmail.setText(emails[position]);
 
         return listViewItem;
     }

@@ -3,8 +3,11 @@ package com.sasoftgroups.handy;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -16,14 +19,12 @@ import com.android.volley.toolbox.Volley;
 public class HandyUsersList extends AppCompatActivity {
 
     public static final String JSON_URL = "http://sasoftgroups.com/handy/userslist.php";
-    private Button buttonGet;
     private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_handy_users_list);
-//        buttonGet.setOnClickListener((View.OnClickListener) this);
         listView = (ListView) findViewById(R.id.HandyUsersListView);
         sendRequest();
 
@@ -55,4 +56,15 @@ public class HandyUsersList extends AppCompatActivity {
         HandyUsersCustomListView cl = new HandyUsersCustomListView(this, usersJason.ids,usersJason.names,usersJason.emails);
         listView.setAdapter(cl);
     }
+
+    public void onClick_SendFRequest(View view){
+
+
+        //Button btnChild = (Button)vwParentRow.getChildAt(1);
+
+
+        Toast.makeText(HandyUsersList.this, "Test", Toast.LENGTH_LONG).show();
+    }
+
+
 }
