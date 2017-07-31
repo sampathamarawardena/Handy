@@ -88,9 +88,7 @@ public class LoginPage extends AppCompatActivity {
                     public void onResponse(String response) {
                         //If we are getting success from server
                         if(response.equalsIgnoreCase(config.LOGIN_FAIL)){
-                            //If the server response is not success
                             Toast.makeText(LoginPage.this, "Invalid username or password", Toast.LENGTH_LONG).show();
-
                         }else{
 
                             //Creating a shared preference

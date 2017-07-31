@@ -3,9 +3,6 @@ package com.sasoftgroups.handy;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -26,9 +23,7 @@ import java.util.Map;
 
 public class HandyUsersList extends AppCompatActivity {
 
-    public static final String JSON_URL = "http://sasoftgroups.com/handy/userslist.php";
     private ListView listView;
-    TextView testname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +34,7 @@ public class HandyUsersList extends AppCompatActivity {
     }
 
     private void sendRequest(){
-        StringRequest stringRequest = new StringRequest(JSON_URL,
+        StringRequest stringRequest = new StringRequest(config.ALL_USERLIST_LINK,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

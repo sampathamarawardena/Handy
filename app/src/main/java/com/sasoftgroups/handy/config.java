@@ -12,6 +12,8 @@ public class config {
 
     public static final String SEND_FRIEND_REQUEST_URL ="http://sasoftgroups.com/handy/sendFrequest.php";
 
+    public static final String ALL_USERLIST_LINK = "http://sasoftgroups.com/handy/userslist.php";
+
 
     //Keys for email and password as defined in our $_POST['key'] in login.php
     public static final String KEY_EMAIL = "email";
