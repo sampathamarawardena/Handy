@@ -1,11 +1,10 @@
-package com.sasoftgroups.handy;
+package com.sasoftgroups.handy.Delete;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -15,6 +14,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.sasoftgroups.handy.HandyUsersCustomListView;
+import com.sasoftgroups.handy.R;
+import com.sasoftgroups.handy.config;
+import com.sasoftgroups.handy.usersJason;
 
 import org.json.JSONException;
 
@@ -54,7 +57,7 @@ public class HandyUsersList extends AppCompatActivity {
 
     private void showJSON(String json){
         usersJason pj = new usersJason(json);
-        pj.parseJSON();
+        //pj.parseJSON(); this line commented code error
         HandyUsersCustomListView cl = new HandyUsersCustomListView(this, usersJason.ids,usersJason.names,usersJason.emails);
         listView.setAdapter(cl);
     }
