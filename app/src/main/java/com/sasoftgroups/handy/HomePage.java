@@ -132,7 +132,7 @@ public class HomePage extends AppCompatActivity {
                         public void onClick(DialogInterface arg0, int arg1) {
 
                             //Getting out sharedpreferences
-                            SharedPreferences preferences = getSharedPreferences(config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+                            SharedPreferences preferences = getSharedPreferences("Handy Login", Context.MODE_PRIVATE);
                             //Getting editor
                             SharedPreferences.Editor editor = preferences.edit();
 

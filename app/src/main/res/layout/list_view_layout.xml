@@ -41,7 +41,7 @@
                 android:layout_weight="1"
                 android:text="TextView"
                 android:textSize="8sp"
-                android:visibility="invisible" />
+                android:visibility="visible" />
 
         </LinearLayout>
 

@@ -10,6 +10,8 @@ public class config {
 
     public static final String REGISTER_URL = "http://sasoftgroups.com/handy/register.php";
 
+    public static final String SEND_FRIEND_REQUEST_URL ="http://sasoftgroups.com/handy/sendFrequest.php";
+
 
     //Keys for email and password as defined in our $_POST['key'] in login.php
     public static final String KEY_EMAIL = "email";
@@ -18,9 +20,10 @@ public class config {
     //If server response is equal to this that means login is successful
     public static final String LOGIN_SUCCESS = "success";
 
-    //Keys for Sharedpreferences
-    //This would be the name of our shared preferences
-    public static final String SHARED_PREF_NAME = "myloginapp";
+    public static final String LOGIN_FAIL = "failure";
+
+    public static final String CurrentUserID = "id";
+
 
     //This would be used to store the email of current logged in user
     public static final String EMAIL_SHARED_PREF = "email";

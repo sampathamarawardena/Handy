@@ -28,10 +28,6 @@ public class LoginPage extends AppCompatActivity {
     private EditText UsernameEt;
     private EditText PasswordEt;
     private boolean loggedIn = false;
-    private Button sign_in_register;
-    private AppCompatButton buttonLogin;
-
-    private static final String URL = "http://sasoftgroups.com/handy/login.php";
 
     @Override
     public void onBackPressed(){
@@ -59,14 +55,14 @@ public class LoginPage extends AppCompatActivity {
         UsernameEt = (EditText) findViewById(R.id.txtEmail);
         PasswordEt = (EditText) findViewById(R.id.txtPass);
 
-        sign_in_register = (Button) findViewById(R.id.btn_Login);
+        //sign_in_register = (Button) findViewById(R.id.btn_Login);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         //In onresume fetching value from sharedpreference
-        SharedPreferences sharedPreferences = getSharedPreferences(config.SHARED_PREF_NAME,Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences("Handy Login",Context.MODE_PRIVATE);
 
         //Fetching the boolean value form sharedpreferences
         loggedIn = sharedPreferences.getBoolean(config.LOGGEDIN_SHARED_PREF, false);
@@ -86,14 +82,19 @@ public class LoginPage extends AppCompatActivity {
         final String password = PasswordEt.getText().toString().trim();
 
         //Creating a string request
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, config.LOGIN_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         //If we are getting success from server
-                        if(response.equalsIgnoreCase(config.LOGIN_SUCCESS)){
+                        if(response.equalsIgnoreCase(config.LOGIN_FAIL)){
+                            //If the server response is not success
+                            Toast.makeText(LoginPage.this, "Invalid username or password", Toast.LENGTH_LONG).show();
+
+                        }else{
+
                             //Creating a shared preference
-                            SharedPreferences sharedPreferences = LoginPage.this.getSharedPreferences(config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+                            SharedPreferences sharedPreferences = LoginPage.this.getSharedPreferences("Handy Login", Context.MODE_PRIVATE);
 
                             //Creating editor to store values to shared preferences
                             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -101,6 +102,7 @@ public class LoginPage extends AppCompatActivity {
                             //Adding values to editor
                             editor.putBoolean(config.LOGGEDIN_SHARED_PREF, true);
                             editor.putString(config.EMAIL_SHARED_PREF, email);
+                            editor.putString(config.CurrentUserID, "2");
 
                             //Saving values to editor
                             editor.commit();
@@ -108,9 +110,6 @@ public class LoginPage extends AppCompatActivity {
                             //Starting profile activity
                             Intent intent = new Intent(LoginPage.this, HomePage.class);
                             startActivity(intent);
-                        }else{
-                            //If the server response is not success
-                            Toast.makeText(LoginPage.this, "Invalid username or password", Toast.LENGTH_LONG).show();
                         }
                     }
                 },
