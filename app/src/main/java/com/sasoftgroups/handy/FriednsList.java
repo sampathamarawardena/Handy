@@ -1,5 +1,8 @@
 package com.sasoftgroups.handy;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -26,7 +29,8 @@ import java.util.Map;
 
 public class FriednsList extends AppCompatActivity implements TabLayout.OnTabSelectedListener{
 
-    ListView listView;
+    ListView listView, FriendRequestlistView;
+
     //This is our tablayout
     private TabLayout tabLayout;
 
@@ -38,6 +42,10 @@ public class FriednsList extends AppCompatActivity implements TabLayout.OnTabSel
         if(tab.getPosition() == 2){
             listView = (ListView) findViewById(R.id.listv_usersList);
             sendRequest();
+        }
+        else if(tab.getPosition() == 1){
+            FriendRequestlistView = (ListView) findViewById(R.id.listVFrendRequest);
+            FriendsRequestList();
         }
         viewPager.setCurrentItem(tab.getPosition());
     }
@@ -106,16 +114,65 @@ public class FriednsList extends AppCompatActivity implements TabLayout.OnTabSel
         listView.setAdapter(cl);
     }
 
+
+    private void FriendsRequestList() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, config.ALL_FRIENDSREQUEST_LINK,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        showFriendrequestJSON(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(FriednsList.this,error.getMessage(),Toast.LENGTH_LONG).show();
+                    }
+                }){
+            @Override
+            protected Map<String,String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("uid", "12");
+                return params;
+            }
+
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+
+    }
+
+    private void showFriendrequestJSON(String json){
+        usersJason pj = new usersJason(json);
+        pj.parseJSON();
+        HandyUsersCustomListView cl = new HandyUsersCustomListView(this, usersJason.ids,usersJason.names,usersJason.emails);
+        FriendRequestlistView.setAdapter(cl);
+    }
+
     public void onClick_SendFRequest(View view) throws JSONException {
-        String uid = null;
-        int position = 0;
-        position = getListView().getPositionForView((LinearLayout) view.getParent());
 
-        Object items = listView.getItemAtPosition(position);
-        uid = items.toString();
+        if(CheckFriend("7","12") == true){
+            String uid = null;
+            int position = 0;
+            position = getListView().getPositionForView((LinearLayout) view.getParent());
 
-        SendFRequest(uid);
-        position =0;
+            Object items = FriendRequestlistView.getItemAtPosition(position);
+            uid = items.toString();
+
+            Toast.makeText(FriednsList.this,"Friend Request Accepted",Toast.LENGTH_LONG).show();
+        } else {
+            String uid = null;
+            int position = 0;
+            position = getListView().getPositionForView((LinearLayout) view.getParent());
+
+            Object items = listView.getItemAtPosition(position);
+            uid = items.toString();
+
+            //SendFRequest(uid);
+            position = 0;
+            Toast.makeText(FriednsList.this,"Friend Request Send",Toast.LENGTH_LONG).show();
+        }
     }
 
 
@@ -147,5 +204,42 @@ public class FriednsList extends AppCompatActivity implements TabLayout.OnTabSel
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
+    }
+
+    public boolean CheckFriend(final String CurrentUID, final String FriendUID){
+        final boolean[] boolFrind = {false};
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, config.LOGIN_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(response == "1"){
+                            boolFrind[0] = true;
+                        }
+                        else {
+                            boolFrind[0] = false;
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                //Adding parameters to request
+                params.put("currentUID", CurrentUID);
+                params.put("friendID", FriendUID);
+
+                //returning parameter
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+
+        return boolFrind[0];
     }
 }

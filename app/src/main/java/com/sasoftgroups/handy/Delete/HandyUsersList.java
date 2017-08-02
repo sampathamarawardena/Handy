@@ -31,8 +31,8 @@ public class HandyUsersList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_handy_users_list);
-        listView = (ListView) findViewById(R.id.HandyUsersListView);
+        //setContentView(R.layout.activity_handy_users_list);
+        //listView = (ListView) findViewById(R.id.HandyUsersListView);
         sendRequest();
     }
 

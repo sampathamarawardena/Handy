@@ -73,14 +73,14 @@
                         android:onClick="btnNeedHand" />
 
                     <Button
-                        android:id="@+id/button4"
+                        android:id="@+id/btnGiveHand"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@drawable/givehand" />
 
                     <Button
-                        android:id="@+id/button3"
+                        android:id="@+id/btnGlobalHelp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -100,7 +100,7 @@
                         android:background="@drawable/messages" />
 
                     <Button
-                        android:id="@+id/button4"
+                        android:id="@+id/btnFriendsList"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -121,7 +121,7 @@
                     android:orientation="horizontal">
 
                     <Button
-                        android:id="@+id/button5"
+                        android:id="@+id/btnMyProfile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -129,14 +129,14 @@
                         android:onClick="clickMyProfile" />
 
                     <Button
-                        android:id="@+id/button4"
+                        android:id="@+id/btnFeedback"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@drawable/feedback" />
 
                     <Button
-                        android:id="@+id/button3"
+                        android:id="@+id/btnAbtHandy"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -152,7 +152,7 @@
                     android:orientation="horizontal">
 
                     <Button
-                        android:id="@+id/button5"
+                        android:id="@+id/btnLogOut"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -160,14 +160,14 @@
                         android:background="@drawable/logout" />
 
                     <Button
-                        android:id="@+id/button4"
+                        android:id="@+id/btnSettings"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@drawable/settings" />
 
                     <Button
-                        android:id="@+id/button3"
+                        android:id="@+id/btnFAQ"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"

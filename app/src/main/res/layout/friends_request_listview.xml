@@ -46,12 +46,12 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/btn_AddFriend"
+            android:id="@+id/btn_AddFriendtoList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
             android:background="@color/colorPrimaryDark"
-            android:onClick="onClick_SendFRequest"
+            android:onClick="onClick_AcceptFRequest"
             android:text="Add"
             android:textColor="@android:color/white"
             android:textSize="18sp" />
