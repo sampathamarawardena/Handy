@@ -9,10 +9,21 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
-import com.sasoftgroups.handy.Delete.HandyUsersList;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class HomePage extends AppCompatActivity {
+    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,100 +31,113 @@ public class HomePage extends AppCompatActivity {
         setContentView(R.layout.activity_home_page);
         messegButtonImage();
         notificationButtonImage();
+        getUserDetails();
 
     }
+
+
+    //region Methods
+    public void getUserDetails() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, config.GET_USER_DETAILS,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editors = sharedPref.edit();
+                        editors.putString(config.CurrentUserID, response);
+                        editors.commit();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(HomePage.this, error.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                String email = sharedPref.getString(config.EMAIL_SHARED_PREF, "");
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("email", email);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+    //endregion
+
+    //region Home Button Click
 
     public void btnNeedHand(View view) {
         Intent needHand = new Intent(HomePage.this, HandRequest.class);
         startActivity(needHand);
     }
 
-    public void messegButtonImage(){
+    public void messegButtonImage() {
 
         Button mesg = (Button) findViewById(R.id.btnMessages);
         int message = 5;
 
-        if (message == 1){
+        if (message == 1) {
             mesg.setBackgroundResource(R.drawable.message1);
-        }
-        else if (message == 2){
+        } else if (message == 2) {
             mesg.setBackgroundResource(R.drawable.message2);
-        }
-        else if (message == 3){
+        } else if (message == 3) {
             mesg.setBackgroundResource(R.drawable.message3);
-        }
-        else if (message == 4){
+        } else if (message == 4) {
             mesg.setBackgroundResource(R.drawable.message4);
-        }
-        else if (message == 5){
+        } else if (message == 5) {
             mesg.setBackgroundResource(R.drawable.message5);
-        }
-        else if (message == 6){
+        } else if (message == 6) {
             mesg.setBackgroundResource(R.drawable.message6);
-        }
-        else if (message == 7){
+        } else if (message == 7) {
             mesg.setBackgroundResource(R.drawable.message7);
-        }
-        else if (message == 8){
+        } else if (message == 8) {
             mesg.setBackgroundResource(R.drawable.message8);
-        }
-        else if (message == 9){
+        } else if (message == 9) {
             mesg.setBackgroundResource(R.drawable.message9);
-        }
-        else if (message == 10){
+        } else if (message == 10) {
             mesg.setBackgroundResource(R.drawable.message10);
-        }
-        else if (message > 10){
+        } else if (message > 10) {
             mesg.setBackgroundResource(R.drawable.message10plus);
-        }
-        else {
+        } else {
             mesg.setBackgroundResource(R.drawable.messages);
         }
 
     }
 
-    public void notificationButtonImage(){
-        Button notification = (Button)findViewById(R.id.btnNotification);
+    public void notificationButtonImage() {
+        Button notification = (Button) findViewById(R.id.btnNotification);
         int notifi = 50;
 
-        if (notifi == 1){
+        if (notifi == 1) {
             notification.setBackgroundResource(R.drawable.notificaton1);
-        }
-        else if (notifi == 2){
+        } else if (notifi == 2) {
             notification.setBackgroundResource(R.drawable.notificaton2);
-        }
-        else if (notifi == 3){
+        } else if (notifi == 3) {
             notification.setBackgroundResource(R.drawable.notificaton3);
-        }
-        else if (notifi == 4){
+        } else if (notifi == 4) {
             notification.setBackgroundResource(R.drawable.notificaton4);
-        }
-        else if (notifi == 5){
+        } else if (notifi == 5) {
             notification.setBackgroundResource(R.drawable.notificaton5);
-        }
-        else if (notifi == 6){
+        } else if (notifi == 6) {
             notification.setBackgroundResource(R.drawable.notificaton6);
-        }
-        else if (notifi == 7){
+        } else if (notifi == 7) {
             notification.setBackgroundResource(R.drawable.notificaton7);
-        }
-        else if (notifi == 8){
+        } else if (notifi == 8) {
             notification.setBackgroundResource(R.drawable.notificaton8);
-        }
-        else if (notifi == 9){
+        } else if (notifi == 9) {
             notification.setBackgroundResource(R.drawable.notificaton9);
-        }
-        else if (notifi == 10){
+        } else if (notifi == 10) {
             notification.setBackgroundResource(R.drawable.notificaton10);
-        }
-        else if (notifi > 10 ){
+        } else if (notifi > 10) {
             notification.setBackgroundResource(R.drawable.notificaton10plus);
-        }
-        else {
+        } else {
             notification.setBackgroundResource(R.drawable.notificaton);
         }
     }
-
 
     public void clickMyProfile(View view) {
         Intent myProfile = new Intent(HomePage.this, MyProfile.class);
@@ -126,45 +150,36 @@ public class HomePage extends AppCompatActivity {
     }
 
     public void btn_Logout(View view) {
-            //Creating an alert dialog to confirm logout
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            alertDialogBuilder.setMessage("Are you sure you want to logout?");
-            alertDialogBuilder.setPositiveButton("Yes",new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface arg0, int arg1) {
+        //Creating an alert dialog to confirm logout
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage("Are you sure you want to logout?");
+        alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface arg0, int arg1) {
 
-                            //Getting out sharedpreferences
-                            SharedPreferences preferences = getSharedPreferences("Handy Login", Context.MODE_PRIVATE);
-                            //Getting editor
-                            SharedPreferences.Editor editor = preferences.edit();
 
-                            //Puting the value false for loggedin
-                            editor.putBoolean(config.LOGGEDIN_SHARED_PREF, false);
+                SharedPreferences preferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putBoolean(config.LOGGEDIN_SHARED_PREF, false);
+                editor.putString(config.EMAIL_SHARED_PREF, "");
+                editor.commit();
 
-                            //Putting blank value to email
-                            editor.putString(config.EMAIL_SHARED_PREF, "");
+                Intent intent = new Intent(HomePage.this, LoginPage.class);
+                startActivity(intent);
 
-                            //Saving the sharedpreferences
-                            editor.commit();
+            }
+        });
+        alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface arg0, int arg1) {
 
-                            Intent intent = new Intent(HomePage.this, LoginPage.class);
-                            startActivity(intent);
-
-                        }
-                    });
-            alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface arg0, int arg1) {
-
-                        }
-                    });
-            //Showing the alert dialog
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
+            }
+        });
+        //Showing the alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
-    public void onClickUsersList(View view) {
-        Intent FriendsList = new Intent(HomePage.this, HandyUsersList.class);
-        startActivity(FriendsList);
-    }
+    //endregion
+
 }

@@ -16,6 +16,16 @@ public class config {
 
     public static final String ALL_FRIENDSREQUEST_LINK = "http://sasoftgroups.com/handy/allFriendRequests.php";
 
+    public static final String GET_USER_DETAILS = "http://sasoftgroups.com/handy/getUserDetails.php";
+
+    public static final String ACCEPT_FIREND = "http://sasoftgroups.com/handy/acceptFRequest.php";
+
+    public static final String GET_ALL_FRIENDS = "http://sasoftgroups.com/handy/getFriendsList.php";
+
+
+    //User Profile Details
+    public static final String CurrentUserID = "id";
+    public static final String CurrentUserName = "name";
 
 
     //Keys for email and password as defined in our $_POST['key'] in login.php
@@ -26,9 +36,6 @@ public class config {
     public static final String LOGIN_SUCCESS = "success";
 
     public static final String LOGIN_FAIL = "failure";
-
-    public static final String CurrentUserID = "id";
-
 
     //This would be used to store the email of current logged in user
     public static final String EMAIL_SHARED_PREF = "email";

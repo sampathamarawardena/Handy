@@ -1,7 +1,7 @@
 package com.sasoftgroups.handy.Delete;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -15,7 +15,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.sasoftgroups.handy.HandyUsersCustomListView;
-import com.sasoftgroups.handy.R;
 import com.sasoftgroups.handy.config;
 import com.sasoftgroups.handy.usersJason;
 

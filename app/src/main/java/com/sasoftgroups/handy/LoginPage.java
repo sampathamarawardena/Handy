@@ -1,15 +1,14 @@
 package com.sasoftgroups.handy;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatButton;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -62,11 +61,9 @@ public class LoginPage extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         //In onresume fetching value from sharedpreference
-        SharedPreferences sharedPreferences = getSharedPreferences("Handy Login",Context.MODE_PRIVATE);
-
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs",Context.MODE_PRIVATE);
         //Fetching the boolean value form sharedpreferences
         loggedIn = sharedPreferences.getBoolean(config.LOGGEDIN_SHARED_PREF, false);
-
         //If we will get true
         if(loggedIn){
             //We will start the Profile Activity
@@ -84,26 +81,24 @@ public class LoginPage extends AppCompatActivity {
         //Creating a string request
         StringRequest stringRequest = new StringRequest(Request.Method.POST, config.LOGIN_URL,
                 new Response.Listener<String>() {
+                    private Activity activity;
+
+                    public Activity getActivity() {
+                        return activity;
+                    }
+
                     @Override
                     public void onResponse(String response) {
                         //If we are getting success from server
-                        if(response.equalsIgnoreCase(config.LOGIN_FAIL)){
+                        if (response.equalsIgnoreCase(config.LOGIN_FAIL)) {
                             Toast.makeText(LoginPage.this, "Invalid username or password", Toast.LENGTH_LONG).show();
-                        }else{
-
-                            //Creating a shared preference
-                            SharedPreferences sharedPreferences = LoginPage.this.getSharedPreferences("Handy Login", Context.MODE_PRIVATE);
-
-                            //Creating editor to store values to shared preferences
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-
-                            //Adding values to editor
-                            editor.putBoolean(config.LOGGEDIN_SHARED_PREF, true);
-                            editor.putString(config.EMAIL_SHARED_PREF, email);
-                            editor.putString(config.CurrentUserID, "2");
-
-                            //Saving values to editor
-                            editor.commit();
+                        } else {
+                            SharedPreferences sharedPref = getSharedPreferences("MyPrefs",Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editors = sharedPref.edit();
+                            editors.putBoolean(config.LOGGEDIN_SHARED_PREF, true);
+                            editors.putString(config.EMAIL_SHARED_PREF, email);
+                            editors.putString("Score", "15");
+                            editors.commit();
 
                             //Starting profile activity
                             Intent intent = new Intent(LoginPage.this, HomePage.class);

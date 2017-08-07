@@ -10,13 +10,13 @@ import android.widget.TextView;
  * Created by ArunaAmarawardena on 7/18/2017.
  */
 
-public class HandyUsersCustomListView extends ArrayAdapter<String>{
+public class GetAllFriends_ListViewData extends ArrayAdapter<String>{
     private String[] ids;
     private String[] names;
     private String[] emails;
     private Activity context;
 
-    public HandyUsersCustomListView(Activity context, String[] ids, String[] names, String[] emails) {
+    public GetAllFriends_ListViewData(Activity context, String[] ids, String[] names, String[] emails) {
         super(context, R.layout.all_users_listview, ids);
         this.context = context;
         this.ids = ids;
@@ -27,7 +27,7 @@ public class HandyUsersCustomListView extends ArrayAdapter<String>{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
-        View listViewItem = inflater.inflate(R.layout.all_users_listview, null, true);
+        View listViewItem = inflater.inflate(R.layout.all_friend_listview, null, true);
         TextView textViewId = (TextView) listViewItem.findViewById(R.id.lblUserID);
         TextView textViewName = (TextView) listViewItem.findViewById(R.id.lblfriendName);
 
