@@ -35,7 +35,7 @@ public class HandyUsersList extends AppCompatActivity {
         sendRequest();
     }
 
-    private void sendRequest(){
+    private void sendRequest() {
         StringRequest stringRequest = new StringRequest(config.ALL_USERLIST_LINK,
                 new Response.Listener<String>() {
                     @Override
@@ -46,7 +46,7 @@ public class HandyUsersList extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(HandyUsersList.this,error.getMessage(),Toast.LENGTH_LONG).show();
+                        Toast.makeText(HandyUsersList.this, error.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
 
@@ -54,10 +54,10 @@ public class HandyUsersList extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
-    private void showJSON(String json){
+    private void showJSON(String json) {
         usersJason pj = new usersJason(json);
         //pj.parseJSON(); this line commented code error
-        HandyUsersCustomListView cl = new HandyUsersCustomListView(this, usersJason.ids,usersJason.names,usersJason.emails);
+        HandyUsersCustomListView cl = new HandyUsersCustomListView(this, usersJason.ids, usersJason.names, usersJason.emails);
         listView.setAdapter(cl);
     }
 
@@ -70,7 +70,7 @@ public class HandyUsersList extends AppCompatActivity {
         uid = items.toString();
 
         SendFRequest(uid);
-        position =0;
+        position = 0;
     }
 
 
@@ -83,20 +83,20 @@ public class HandyUsersList extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(HandyUsersList.this,response,Toast.LENGTH_LONG).show();
+                        Toast.makeText(HandyUsersList.this, response, Toast.LENGTH_LONG).show();
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(HandyUsersList.this,error.toString(),Toast.LENGTH_LONG).show();
+                        Toast.makeText(HandyUsersList.this, error.toString(), Toast.LENGTH_LONG).show();
                     }
-                }){
+                }) {
             @Override
-            protected Map<String,String> getParams() throws AuthFailureError {
-                Map<String,String> params = new HashMap<String, String>();
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
                 params.put("userID", config.CurrentUserID);
-                params.put("senderID",uid);
+                params.put("senderID", uid);
                 return params;
             }
         };

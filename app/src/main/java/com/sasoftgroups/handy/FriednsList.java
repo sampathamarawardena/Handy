@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 //endregion
 
-public class FriednsList extends AppCompatActivity implements TabLayout.OnTabSelectedListener{
+public class FriednsList extends AppCompatActivity implements TabLayout.OnTabSelectedListener {
 
     //region Variable Declaration
     ListView listView, FriendRequestlistView, allFriendsListView;
@@ -71,16 +71,16 @@ public class FriednsList extends AppCompatActivity implements TabLayout.OnTabSel
     //region Tab Click Event Handler
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
-        if(tab.getPosition() == 0){
+        if (tab.getPosition() == 0) {
             allFriendsListView = (ListView) findViewById(R.id.listview_allFriends);
             getAllFriends();
 
         }
-        if(tab.getPosition() == 1){
+        if (tab.getPosition() == 1) {
             FriendRequestlistView = (ListView) findViewById(R.id.listVFrendRequest);
             GetAllFriendRequests();
         }
-        if(tab.getPosition() == 2){
+        if (tab.getPosition() == 2) {
             listView = (ListView) findViewById(R.id.listv_usersList);
             GetAllUsers();
         }
@@ -91,7 +91,7 @@ public class FriednsList extends AppCompatActivity implements TabLayout.OnTabSel
     //region Get All Friends
     private void getAllFriends() {
         SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-        final String id = sharedPref.getString(config.CurrentUserID,"");
+        final String id = sharedPref.getString(config.CurrentUserID, "");
         StringRequest stringRequest = new StringRequest(Request.Method.POST, config.GET_ALL_FRIENDS,
                 new Response.Listener<String>() {
                     @Override
@@ -102,12 +102,12 @@ public class FriednsList extends AppCompatActivity implements TabLayout.OnTabSel
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(FriednsList.this,error.getMessage(),Toast.LENGTH_LONG).show();
+                        Toast.makeText(FriednsList.this, error.getMessage(), Toast.LENGTH_LONG).show();
                     }
-                }){
+                }) {
             @Override
-            protected Map<String,String> getParams() throws AuthFailureError {
-                Map<String,String> params = new HashMap<String, String>();
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
                 params.put("uid", id);
                 return params;
             }
@@ -116,11 +116,12 @@ public class FriednsList extends AppCompatActivity implements TabLayout.OnTabSel
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
     }
-    private void getAllFriendsJSON(String json){
+
+    private void getAllFriendsJSON(String json) {
         allFriendsListView = (ListView) findViewById(R.id.listview_allFriends);
         usersJason pj = new usersJason(json);
         pj.parseJSON();
-        GetAllFriends_ListViewData cl = new GetAllFriends_ListViewData(this, usersJason.ids,usersJason.names,usersJason.emails);
+        GetAllFriends_ListViewData cl = new GetAllFriends_ListViewData(this, usersJason.ids, usersJason.names, usersJason.emails);
         allFriendsListView.setAdapter(cl);
     }
     //endregion
@@ -149,7 +150,7 @@ public class FriednsList extends AppCompatActivity implements TabLayout.OnTabSel
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(FriednsList.this,error.getMessage(),Toast.LENGTH_LONG).show();
+                        Toast.makeText(FriednsList.this, error.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
 
@@ -157,11 +158,11 @@ public class FriednsList extends AppCompatActivity implements TabLayout.OnTabSel
         requestQueue.add(stringRequest);
     }
 
-    private void AllUsersJSON(String json){
+    private void AllUsersJSON(String json) {
         listView = (ListView) findViewById(R.id.listv_usersList);
         usersJason pj = new usersJason(json);
         pj.parseJSON();
-        HandyUsersCustomListView cl = new HandyUsersCustomListView(this, usersJason.ids,usersJason.names,usersJason.emails);
+        HandyUsersCustomListView cl = new HandyUsersCustomListView(this, usersJason.ids, usersJason.names, usersJason.emails);
         listView.setAdapter(cl);
     }
     //endregion
@@ -169,7 +170,7 @@ public class FriednsList extends AppCompatActivity implements TabLayout.OnTabSel
     //region Get All Friends Requests to List View
     private void GetAllFriendRequests() {
         SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-        final String id = sharedPref.getString(config.CurrentUserID,"");
+        final String id = sharedPref.getString(config.CurrentUserID, "");
         StringRequest stringRequest = new StringRequest(Request.Method.POST, config.ALL_FRIENDSREQUEST_LINK,
                 new Response.Listener<String>() {
                     @Override
@@ -180,12 +181,12 @@ public class FriednsList extends AppCompatActivity implements TabLayout.OnTabSel
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(FriednsList.this,error.getMessage(),Toast.LENGTH_LONG).show();
+                        Toast.makeText(FriednsList.this, error.getMessage(), Toast.LENGTH_LONG).show();
                     }
-                }){
+                }) {
             @Override
-            protected Map<String,String> getParams() throws AuthFailureError {
-                Map<String,String> params = new HashMap<String, String>();
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
                 params.put("uid", id);
                 return params;
             }
@@ -197,11 +198,11 @@ public class FriednsList extends AppCompatActivity implements TabLayout.OnTabSel
 
     }
 
-    private void showFriendrequestJSON(String json){
+    private void showFriendrequestJSON(String json) {
         FriendRequestlistView = (ListView) findViewById(R.id.listVFrendRequest);
         usersJason pj = new usersJason(json);
         pj.parseJSON();
-        FriendRequestListViewData cl = new FriendRequestListViewData(this, usersJason.ids,usersJason.names,usersJason.emails);
+        FriendRequestListViewData cl = new FriendRequestListViewData(this, usersJason.ids, usersJason.names, usersJason.emails);
         FriendRequestlistView.setAdapter(cl);
     }
     //endregion
@@ -210,36 +211,36 @@ public class FriednsList extends AppCompatActivity implements TabLayout.OnTabSel
 
     public void onClick_SendFRequest(View view) throws JSONException {
         SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-        final String id = sharedPref.getString(config.CurrentUserID,"");
+        final String id = sharedPref.getString(config.CurrentUserID, "");
         int position = 0;
         position = listView.getPositionForView((LinearLayout) view.getParent());
-        Object  items = listView.getItemAtPosition(position);
+        Object items = listView.getItemAtPosition(position);
         final String uid = items.toString();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, config.SEND_FRIEND_REQUEST_URL,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            Toast.makeText(FriednsList.this,"Friend Request Sent",Toast.LENGTH_LONG).show();
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(FriednsList.this,error.toString(),Toast.LENGTH_LONG).show();
-                        }
-                    }){
-                @Override
-                protected Map<String,String> getParams() throws AuthFailureError {
-                    SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-                    String email = sharedPref.getString(config.EMAIL_SHARED_PREF,"");
-                    Map<String,String> params = new HashMap<String, String>();
-                    params.put("userID", id);
-                    params.put("senderID", uid);
-                    return params;
-                }
-            };
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
-            requestQueue.add(stringRequest);
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(FriednsList.this, "Friend Request Sent", Toast.LENGTH_LONG).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(FriednsList.this, error.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                String email = sharedPref.getString(config.EMAIL_SHARED_PREF, "");
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("userID", id);
+                params.put("senderID", uid);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
     }
     //endregion
 
@@ -279,16 +280,15 @@ public class FriednsList extends AppCompatActivity implements TabLayout.OnTabSel
 //endregion
 
     //region Check Friend - Not using yet
-    public boolean CheckFriend(final String CurrentUID, final String FriendUID){
+    public boolean CheckFriend(final String CurrentUID, final String FriendUID) {
         final boolean[] boolFrind = {false};
         StringRequest stringRequest = new StringRequest(Request.Method.POST, config.LOGIN_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        if(response == "1"){
+                        if (response == "1") {
                             boolFrind[0] = true;
-                        }
-                        else {
+                        } else {
                             boolFrind[0] = false;
                         }
                     }
@@ -298,10 +298,10 @@ public class FriednsList extends AppCompatActivity implements TabLayout.OnTabSel
                     public void onErrorResponse(VolleyError error) {
 
                     }
-                }){
+                }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> params = new HashMap<>();
+                Map<String, String> params = new HashMap<>();
                 //Adding parameters to request
                 params.put("currentUID", CurrentUID);
                 params.put("friendID", FriendUID);
@@ -320,10 +320,10 @@ public class FriednsList extends AppCompatActivity implements TabLayout.OnTabSel
     //region On Click Accept Friend Request
     public void onClick_AcceptFriendRequest(View view) {
         SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-        final String id = sharedPref.getString(config.CurrentUserID,"");
+        final String id = sharedPref.getString(config.CurrentUserID, "");
         int position = 0;
         position = FriendRequestlistView.getPositionForView((LinearLayout) view.getParent());
-        Object  items = FriendRequestlistView.getItemAtPosition(position);
+        Object items = FriendRequestlistView.getItemAtPosition(position);
 
         final String uid = items.toString();
 
@@ -331,20 +331,20 @@ public class FriednsList extends AppCompatActivity implements TabLayout.OnTabSel
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(FriednsList.this,"Friend Request Accepted",Toast.LENGTH_LONG).show();
+                        Toast.makeText(FriednsList.this, "Friend Request Accepted", Toast.LENGTH_LONG).show();
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(FriednsList.this,error.toString(),Toast.LENGTH_LONG).show();
+                        Toast.makeText(FriednsList.this, error.toString(), Toast.LENGTH_LONG).show();
                     }
-                }){
+                }) {
             @Override
-            protected Map<String,String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams() throws AuthFailureError {
                 SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-                String email = sharedPref.getString(config.EMAIL_SHARED_PREF,"");
-                Map<String,String> params = new HashMap<String, String>();
+                String email = sharedPref.getString(config.EMAIL_SHARED_PREF, "");
+                Map<String, String> params = new HashMap<String, String>();
                 params.put("currentUser", id);
                 params.put("FriendID", uid);
                 return params;

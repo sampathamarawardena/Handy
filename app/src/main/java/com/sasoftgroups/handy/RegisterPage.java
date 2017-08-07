@@ -1,5 +1,7 @@
 package com.sasoftgroups.handy;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -23,7 +25,7 @@ import java.util.Map;
 public class RegisterPage extends AppCompatActivity {
 
     EditText name, uname, email, phone, password;
-     String str_name, str_uname, str_email, str_phone, str_password;
+    String str_name, str_uname, str_email, str_phone, str_password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,26 +60,38 @@ public class RegisterPage extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(RegisterPage.this,response,Toast.LENGTH_LONG).show();
+                        new AlertDialog.Builder(RegisterPage.this)
+                                .setIcon(android.R.drawable.ic_dialog_info)
+                                .setTitle("Welcome to Handy")
+                                .setMessage("You are successfully Registered to Handy")
+                                .setPositiveButton("Login to Handy", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent login = new Intent(RegisterPage.this, LoginPage.class);
+                                        startActivity(login);
+                                    }
+
+                                })
+                                .show();
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(RegisterPage.this,error.toString(),Toast.LENGTH_LONG).show();
+                        Toast.makeText(RegisterPage.this, error.toString(), Toast.LENGTH_LONG).show();
                     }
-                }){
-        @Override
-        protected Map<String,String> getParams() throws AuthFailureError {
-            Map<String,String> params = new HashMap<String, String>();
-            params.put("str_name", str_name);
-            params.put("str_uname",str_uname);
-            params.put("str_email", str_email);
-            params.put("str_phone", str_phone);
-            params.put("str_password",str_password);
-            return params;
-        }
-    };
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("str_name", str_name);
+                params.put("str_uname", str_uname);
+                params.put("str_email", str_email);
+                params.put("str_phone", str_phone);
+                params.put("str_password", str_password);
+                return params;
+            }
+        };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
     }

@@ -8,14 +8,13 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 
-
-
 /**
  * Created by Aruna Amarawardena on 31/07/2017.
  */
 
 public class Tab3 extends Fragment {
     ListView listView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.tab3, container, false);

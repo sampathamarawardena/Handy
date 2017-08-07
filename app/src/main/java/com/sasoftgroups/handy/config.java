@@ -10,7 +10,7 @@ public class config {
 
     public static final String REGISTER_URL = "http://sasoftgroups.com/handy/register.php";
 
-    public static final String SEND_FRIEND_REQUEST_URL ="http://sasoftgroups.com/handy/sendFrequest.php";
+    public static final String SEND_FRIEND_REQUEST_URL = "http://sasoftgroups.com/handy/sendFrequest.php";
 
     public static final String ALL_USERLIST_LINK = "http://sasoftgroups.com/handy/userslist.php";
 

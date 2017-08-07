@@ -10,15 +10,15 @@ import android.widget.ListView;
  */
 
 public class Pager extends FragmentStatePagerAdapter {
+    public ListView listView;
     //integer to count number of tabs
     int tabCount;
-    public ListView listView;
 
     //Constructor to the class
     public Pager(FragmentManager fm, int tabCount) {
         super(fm);
         //Initializing tab count
-        this.tabCount= tabCount;
+        this.tabCount = tabCount;
     }
 
     //Overriding method getItem

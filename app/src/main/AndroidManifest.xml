@@ -27,7 +27,6 @@
         <activity android:name=".GiveHand" />
         <activity android:name=".Messenger" />
         <activity android:name=".FeedbackArea" />
-        <activity android:name=".usersList"></activity>
         <activity android:name=".Delete.HandyUsersList"></activity>
     </application>
 

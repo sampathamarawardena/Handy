@@ -1,4 +1,5 @@
 package com.sasoftgroups.handy;
+
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +11,7 @@ import android.widget.TextView;
  * Created by ArunaAmarawardena on 7/18/2017.
  */
 
-public class GetAllFriends_ListViewData extends ArrayAdapter<String>{
+public class GetAllFriends_ListViewData extends ArrayAdapter<String> {
     private String[] ids;
     private String[] names;
     private String[] emails;
@@ -36,7 +37,6 @@ public class GetAllFriends_ListViewData extends ArrayAdapter<String>{
 
         return listViewItem;
     }
-
 
 
 }

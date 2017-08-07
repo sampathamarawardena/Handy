@@ -29,13 +29,12 @@ public class LoginPage extends AppCompatActivity {
     private boolean loggedIn = false;
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
         new AlertDialog.Builder(this)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setTitle("Closing Handy")
                 .setMessage("Are you sure you want to close Handy?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener()
-                {
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         finish();
@@ -54,6 +53,10 @@ public class LoginPage extends AppCompatActivity {
         UsernameEt = (EditText) findViewById(R.id.txtEmail);
         PasswordEt = (EditText) findViewById(R.id.txtPass);
 
+        if (getIntent().getBooleanExtra("EXIT", false)) {
+            finish();
+        }
+
         //sign_in_register = (Button) findViewById(R.id.btn_Login);
     }
 
@@ -61,11 +64,11 @@ public class LoginPage extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         //In onresume fetching value from sharedpreference
-        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs",Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         //Fetching the boolean value form sharedpreferences
         loggedIn = sharedPreferences.getBoolean(config.LOGGEDIN_SHARED_PREF, false);
         //If we will get true
-        if(loggedIn){
+        if (loggedIn) {
             //We will start the Profile Activity
             Intent intent = new Intent(LoginPage.this, HomePage.class);
             startActivity(intent);
@@ -73,7 +76,7 @@ public class LoginPage extends AppCompatActivity {
     }
 
 
-    private void login(){
+    private void login() {
         //Getting values from edit texts
         final String email = UsernameEt.getText().toString().trim();
         final String password = PasswordEt.getText().toString().trim();
@@ -93,7 +96,7 @@ public class LoginPage extends AppCompatActivity {
                         if (response.equalsIgnoreCase(config.LOGIN_FAIL)) {
                             Toast.makeText(LoginPage.this, "Invalid username or password", Toast.LENGTH_LONG).show();
                         } else {
-                            SharedPreferences sharedPref = getSharedPreferences("MyPrefs",Context.MODE_PRIVATE);
+                            SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
                             SharedPreferences.Editor editors = sharedPref.edit();
                             editors.putBoolean(config.LOGGEDIN_SHARED_PREF, true);
                             editors.putString(config.EMAIL_SHARED_PREF, email);
@@ -111,10 +114,10 @@ public class LoginPage extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
 
                     }
-                }){
+                }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> params = new HashMap<>();
+                Map<String, String> params = new HashMap<>();
                 //Adding parameters to request
                 params.put("email", email);
                 params.put("password", password);

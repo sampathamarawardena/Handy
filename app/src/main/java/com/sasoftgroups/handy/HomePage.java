@@ -35,6 +35,30 @@ public class HomePage extends AppCompatActivity {
 
     }
 
+    private void killActivity() {
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Closing Handy")
+                .setMessage("Are you sure you want to close Handy?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(getApplicationContext(), LoginPage.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.putExtra("EXIT", true);
+                        startActivity(intent);
+                    }
+
+                })
+                .setNegativeButton("No", null)
+                .show();
+    }
+
 
     //region Methods
     public void getUserDetails() {
