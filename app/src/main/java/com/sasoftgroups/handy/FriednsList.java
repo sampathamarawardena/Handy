@@ -140,7 +140,9 @@ public class FriednsList extends AppCompatActivity implements TabLayout.OnTabSel
 
     //region Get All Users To List View
     private void GetAllUsers() {
-        StringRequest stringRequest = new StringRequest(config.ALL_USERLIST_LINK,
+            SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+            final String id = sharedPref.getString(config.CurrentUserID, "");
+            StringRequest stringRequest = new StringRequest(config.ALL_USERLIST_LINK,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -152,8 +154,14 @@ public class FriednsList extends AppCompatActivity implements TabLayout.OnTabSel
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(FriednsList.this, error.getMessage(), Toast.LENGTH_LONG).show();
                     }
-                });
-
+                }){
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("uid", id);
+                    return params;
+                }
+        };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
     }

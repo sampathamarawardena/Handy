@@ -140,8 +140,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@drawable/handy"
-                        android:onClick="onClickUsersList" />
+                        android:background="@drawable/handy" />
 
                 </LinearLayout>
 
@@ -157,7 +156,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:onClick="btn_Logout"
-                        android:background="@drawable/logout" />
+                        android:background="@drawable/logout" />+
 
                     <Button
                         android:id="@+id/btnSettings"

@@ -95,7 +95,10 @@ public class HomePage extends AppCompatActivity {
     //region Home Button Click
 
     public void btnNeedHand(View view) {
-        Intent needHand = new Intent(HomePage.this, HandRequest.class);
+        /*Intent needHand = new Intent(HomePage.this, HandRequest.class);
+        startActivity(needHand);*/
+
+        Intent needHand = new Intent(HomePage.this, getAllUserData.class);
         startActivity(needHand);
     }
 

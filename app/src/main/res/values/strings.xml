@@ -1,4 +1,18 @@
 <resources>
     <string name="app_name">Handy</string>
     <string name="saved_high_score"></string>
+
+    <string-array name="auto_keyword">
+        <item>Education</item>
+        <item>IT</item>
+        <item>Book</item>
+        <item>Lectures</item>
+        <item>Notes</item>
+        <item>Tutorials</item>
+        <item>Java</item>
+        <item>C#</item>
+        <item>PHP</item>
+        <item>Android</item>
+        <item>Images</item>
+    </string-array>
 </resources>
