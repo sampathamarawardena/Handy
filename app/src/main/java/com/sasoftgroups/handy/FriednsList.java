@@ -72,16 +72,16 @@ public class FriednsList extends AppCompatActivity implements TabLayout.OnTabSel
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         if (tab.getPosition() == 0) {
-            allFriendsListView = (ListView) findViewById(R.id.listview_allFriends);
+            // allFriendsListView = (ListView) findViewById(R.id.listview_allFriends);
             getAllFriends();
 
         }
         if (tab.getPosition() == 1) {
-            FriendRequestlistView = (ListView) findViewById(R.id.listVFrendRequest);
+            // FriendRequestlistView = (ListView) findViewById(R.id.listVFrendRequest);
             GetAllFriendRequests();
         }
         if (tab.getPosition() == 2) {
-            listView = (ListView) findViewById(R.id.listv_usersList);
+            // listView = (ListView) findViewById(R.id.listv_usersList);
             GetAllUsers();
         }
         viewPager.setCurrentItem(tab.getPosition());
@@ -124,7 +124,7 @@ public class FriednsList extends AppCompatActivity implements TabLayout.OnTabSel
         GetAllFriends_ListViewData cl = new GetAllFriends_ListViewData(this, usersJason.ids, usersJason.names, usersJason.emails);
         allFriendsListView.setAdapter(cl);
     }
-    //endregion
+    //endregion-
 
     //region NotUsing This Tab Selecters
     @Override
@@ -142,7 +142,8 @@ public class FriednsList extends AppCompatActivity implements TabLayout.OnTabSel
     private void GetAllUsers() {
             SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
             final String id = sharedPref.getString(config.CurrentUserID, "");
-            StringRequest stringRequest = new StringRequest(config.ALL_USERLIST_LINK,
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, config.ALL_USERLIST_LINK,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -294,11 +295,7 @@ public class FriednsList extends AppCompatActivity implements TabLayout.OnTabSel
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        if (response == "1") {
-                            boolFrind[0] = true;
-                        } else {
-                            boolFrind[0] = false;
-                        }
+                        boolFrind[0] = response == "1";
                     }
                 },
                 new Response.ErrorListener() {

@@ -100,7 +100,6 @@ public class LoginPage extends AppCompatActivity {
                             SharedPreferences.Editor editors = sharedPref.edit();
                             editors.putBoolean(config.LOGGEDIN_SHARED_PREF, true);
                             editors.putString(config.EMAIL_SHARED_PREF, email);
-                            editors.putString("Score", "15");
                             editors.commit();
 
                             //Starting profile activity

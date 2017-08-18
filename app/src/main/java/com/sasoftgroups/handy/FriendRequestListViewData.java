@@ -18,7 +18,7 @@ public class FriendRequestListViewData extends ArrayAdapter<String> {
     private Activity context;
 
     public FriendRequestListViewData(Activity context, String[] ids, String[] names, String[] emails) {
-        super(context, R.layout.all_users_listview, ids);
+        super(context, R.layout.friend_requests_listview, ids);
         this.context = context;
         this.ids = ids;
         this.names = names;
