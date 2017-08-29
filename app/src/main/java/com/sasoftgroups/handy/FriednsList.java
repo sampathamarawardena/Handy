@@ -126,7 +126,7 @@ public class FriednsList extends AppCompatActivity implements TabLayout.OnTabSel
     }
     //endregion-
 
-    //region NotUsing This Tab Selecters
+    //region useless Tab Selectors
     @Override
     public void onTabUnselected(TabLayout.Tab tab) {
 
