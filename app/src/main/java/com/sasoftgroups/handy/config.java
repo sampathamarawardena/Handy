@@ -16,6 +16,8 @@ public class config {
 
     public static final String ALL_FRIENDSREQUEST_LINK = "http://sasoftgroups.com/handy/allFriendRequests.php";
 
+    public static final String GET_USER_KEYWORDS = "http://sasoftgroups.com/handy/getUserKeywords.php";
+
     public static final String GET_USER_DETAILS = "http://sasoftgroups.com/handy/getUserDetails.php";
 
     public static final String ACCEPT_FIREND = "http://sasoftgroups.com/handy/acceptFRequest.php";
@@ -24,24 +26,21 @@ public class config {
 
     public static final String UPDATE_REGISTERED_USER = "http://sasoftgroups.com/handy/registerUpdate.php";
 
+    public static final String PUT_HELP_REQUEST = "http://sasoftgroups.com/handy/PUT_Help_Request.php";
 
-    //User Profile Details
+    public static final String GET_HELP_REQUEST = "http://sasoftgroups.com/handy/getHelpRequest.php";
+
+
     public static final String CurrentUserID = "id";
+    public static final String LOGIN_FAIL = "failure";
+    public static final String EMAIL_SHARED_PREF = "email";
+    public static final String LOGGEDIN_SHARED_PREF = "loggedin";
+    public static final String USER_KEYS = "";
+
+
     public static final String CurrentUserName = "name";
-
-
-    //Keys for email and password as defined in our $_POST['key'] in login.php
     public static final String KEY_EMAIL = "email";
     public static final String KEY_PASSWORD = "password";
-
     public static final String SUCCESS = "success";
     public static final String FAIL = "fail";
-
-    public static final String LOGIN_FAIL = "failure";
-
-    //This would be used to store the email of current logged in user
-    public static final String EMAIL_SHARED_PREF = "email";
-
-    //We will use this to store the boolean in sharedpreference to track user is loggedin or not
-    public static final String LOGGEDIN_SHARED_PREF = "loggedin";
 }

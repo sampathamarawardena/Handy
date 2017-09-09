@@ -77,7 +77,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@drawable/givehand" />
+                        android:background="@drawable/givehand"
+                        android:onClick="onClickGiveHand" />
 
                     <Button
                         android:id="@+id/btnGlobalHelp"
@@ -155,8 +156,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:onClick="btn_Logout"
-                        android:background="@drawable/logout" />+
+                        android:background="@drawable/logout"
+                        android:onClick="btn_Logout" />+
 
                     <Button
                         android:id="@+id/btnSettings"

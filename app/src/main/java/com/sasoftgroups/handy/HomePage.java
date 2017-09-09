@@ -32,7 +32,6 @@ public class HomePage extends AppCompatActivity {
         messegButtonImage();
         notificationButtonImage();
         getUserDetails();
-
     }
 
     private void killActivity() {
@@ -59,7 +58,6 @@ public class HomePage extends AppCompatActivity {
                 .show();
     }
 
-
     //region Methods
     public void getUserDetails() {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, config.GET_USER_DETAILS,
@@ -69,6 +67,39 @@ public class HomePage extends AppCompatActivity {
                         SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editors = sharedPref.edit();
                         editors.putString(config.CurrentUserID, response);
+                        editors.commit();
+                        LoadCategory();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(HomePage.this, error.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                String email = sharedPref.getString(config.EMAIL_SHARED_PREF, "");
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("email", email);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+
+
+    }
+
+    public void LoadCategory() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, config.GET_USER_KEYWORDS,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editors = sharedPref.edit();
+                        editors.putString(config.USER_KEYS, response);
                         editors.commit();
                     }
                 },
@@ -90,16 +121,19 @@ public class HomePage extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
     }
+
     //endregion
 
     //region Home Button Click
 
     public void btnNeedHand(View view) {
-        /*Intent needHand = new Intent(HomePage.this, HandRequest.class);
-        startActivity(needHand);*/
-
-        Intent needHand = new Intent(HomePage.this, getAllUserData.class);
+        Intent needHand = new Intent(HomePage.this, HandRequest.class);
         startActivity(needHand);
+    }
+
+    public void onClickGiveHand(View view) {
+        Intent giveHand = new Intent(HomePage.this, GiveHand.class);
+        startActivity(giveHand);
     }
 
     public void messegButtonImage() {
@@ -206,7 +240,6 @@ public class HomePage extends AppCompatActivity {
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
-
     //endregion
 
 }

@@ -53,7 +53,7 @@
             android:layout_height="10dp"
             android:layout_marginTop="20dp"
             android:layout_weight="0.12"
-            android:background="@color/colorPrimaryDark"
+            android:background="@drawable/roundedbutton"
             android:onClick="onClickRegAdd"
             android:text="Next"
             android:textColor="@android:color/background_light"
