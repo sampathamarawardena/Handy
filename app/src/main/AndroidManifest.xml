@@ -27,7 +27,7 @@
         <activity android:name=".GiveHand" />
         <activity android:name=".Messenger" />
         <activity android:name=".FeedbackArea" />
-        <activity android:name=".Delete.HandyUsersList" />
+        <activity android:name=".RegisterPartTwo" />
         <activity android:name=".getAllUserData"></activity>
     </application>
 

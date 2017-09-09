@@ -22,6 +22,8 @@ public class config {
 
     public static final String GET_ALL_FRIENDS = "http://sasoftgroups.com/handy/getFriendsList.php";
 
+    public static final String UPDATE_REGISTERED_USER = "http://sasoftgroups.com/handy/registerUpdate.php";
+
 
     //User Profile Details
     public static final String CurrentUserID = "id";
@@ -32,8 +34,8 @@ public class config {
     public static final String KEY_EMAIL = "email";
     public static final String KEY_PASSWORD = "password";
 
-    //If server response is equal to this that means login is successful
-    public static final String LOGIN_SUCCESS = "success";
+    public static final String SUCCESS = "success";
+    public static final String FAIL = "fail";
 
     public static final String LOGIN_FAIL = "failure";
 

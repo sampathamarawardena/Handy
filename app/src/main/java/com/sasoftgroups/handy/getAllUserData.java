@@ -1,8 +1,7 @@
 package com.sasoftgroups.handy;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.MultiAutoCompleteTextView;
 
 public class getAllUserData extends AppCompatActivity {
@@ -11,8 +10,8 @@ public class getAllUserData extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_get_all_user_data);
-
+        setContentView(R.layout.activity_register_last_step);
+/*
         mvactv_KeywordRegister = (MultiAutoCompleteTextView) findViewById(R.id.mvactv_KeywordRegister);
 
         String [] keyws = getResources().getStringArray(R.array.auto_keyword);
@@ -20,6 +19,6 @@ public class getAllUserData extends AppCompatActivity {
         mvactv_KeywordRegister.setThreshold(1);
         mvactv_KeywordRegister.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 
-        mvactv_KeywordRegister.setAdapter(arrayAdapter);
+        mvactv_KeywordRegister.setAdapter(arrayAdapter);*/
     }
 }

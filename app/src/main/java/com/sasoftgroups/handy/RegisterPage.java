@@ -1,8 +1,10 @@
 package com.sasoftgroups.handy;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -60,19 +62,43 @@ public class RegisterPage extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        new AlertDialog.Builder(RegisterPage.this)
-                                .setIcon(android.R.drawable.ic_dialog_info)
-                                .setTitle("Welcome to Handy")
-                                .setMessage("You are successfully Registered to Handy")
-                                .setPositiveButton("Login to Handy", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Intent login = new Intent(RegisterPage.this, LoginPage.class);
-                                        startActivity(login);
-                                    }
+                        if (response.isEmpty()) {
+                            Toast.makeText(RegisterPage.this, "There is an error please check your internet connection", Toast.LENGTH_LONG).show();
+                        } else {
+                            if (response.equals("email")) {
+                                new AlertDialog.Builder(RegisterPage.this)
+                                        .setIcon(android.R.drawable.ic_dialog_info)
+                                        .setTitle("Alredy Have Account")
+                                        .setMessage("This email address is already registered")
+                                        .setPositiveButton("Login to Handy", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                Intent login = new Intent(RegisterPage.this, RegisterPartTwo.class);
+                                                startActivity(login);
+                                            }
+                                        })
+                                        .setNegativeButton("Try again", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                Intent login = new Intent(RegisterPage.this, LoginPage.class);
+                                                startActivity(login);
+                                            }
+                                        }).show();
+                            } else if (response.equals("fail")) {
+                                Toast.makeText(RegisterPage.this, "Please Try again later there is any server error", Toast.LENGTH_LONG).show();
+                            } else {
+                                SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editors = sharedPref.edit();
+                                editors.putString(config.CurrentUserID, response);
+                                editors.commit();
 
-                                })
-                                .show();
+                                Toast.makeText(RegisterPage.this, "You are successfully Registered to Handy", Toast.LENGTH_LONG).show();
+                                Toast.makeText(RegisterPage.this, "We need few more details", Toast.LENGTH_LONG).show();
+
+                                Intent reg = new Intent(RegisterPage.this, RegisterPartTwo.class);
+                                startActivity(reg);
+                            }
+                        }
                     }
                 },
                 new Response.ErrorListener() {
