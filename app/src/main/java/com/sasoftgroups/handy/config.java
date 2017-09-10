@@ -30,6 +30,10 @@ public class config {
 
     public static final String GET_HELP_REQUEST = "http://sasoftgroups.com/handy/getHelpRequest.php";
 
+    public static final String ACCEPT_HELP_REQUEST = "http://sasoftgroups.com/handy/ACCEPT_Help_Request.php";
+
+    public static final String GET_START_MESSAGE = "http://sasoftgroups.com/handy/GET_MESSAGE.php";
+
 
     public static final String CurrentUserID = "id";
     public static final String LOGIN_FAIL = "failure";

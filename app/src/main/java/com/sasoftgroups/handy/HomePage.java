@@ -68,7 +68,7 @@ public class HomePage extends AppCompatActivity {
                         SharedPreferences.Editor editors = sharedPref.edit();
                         editors.putString(config.CurrentUserID, response);
                         editors.commit();
-                        LoadCategory();
+                        //LoadCategory();
                     }
                 },
                 new Response.ErrorListener() {
@@ -91,7 +91,7 @@ public class HomePage extends AppCompatActivity {
 
 
     }
-
+/*
     public void LoadCategory() {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, config.GET_USER_KEYWORDS,
                 new Response.Listener<String>() {
@@ -121,7 +121,7 @@ public class HomePage extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
     }
-
+*/
     //endregion
 
     //region Home Button Click
@@ -239,6 +239,11 @@ public class HomePage extends AppCompatActivity {
         //Showing the alert dialog
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+    }
+
+    public void onclick_Messages(View view) {
+        Intent Message = new Intent(HomePage.this, Messenger.class);
+        startActivity(Message);
     }
     //endregion
 
