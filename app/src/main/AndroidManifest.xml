@@ -28,7 +28,10 @@
         <activity android:name=".Messenger" />
         <activity android:name=".FeedbackArea" />
         <activity android:name=".RegisterPartTwo" />
-        <activity android:name=".getAllUserData"></activity>
+        <activity android:name=".getAllUserData" />
+        <activity
+            android:name=".oneChat"
+            android:windowSoftInputMode="adjustPan"></activity>
     </application>
 
 </manifest>

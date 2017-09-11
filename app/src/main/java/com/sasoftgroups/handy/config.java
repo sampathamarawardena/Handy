@@ -39,7 +39,7 @@ public class config {
     public static final String LOGIN_FAIL = "failure";
     public static final String EMAIL_SHARED_PREF = "email";
     public static final String LOGGEDIN_SHARED_PREF = "loggedin";
-    public static final String USER_KEYS = "";
+    public static final String HELPID = "0";
 
 
     public static final String CurrentUserName = "name";
