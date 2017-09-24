@@ -5,7 +5,6 @@ package com.sasoftgroups.handy;
  */
 
 public class config {
-    //URL to our login.php file
     public static final String LOGIN_URL = "http://sasoftgroups.com/handy/login.php";
 
     public static final String REGISTER_URL = "http://sasoftgroups.com/handy/register.php";
@@ -34,12 +33,19 @@ public class config {
 
     public static final String GET_START_MESSAGE = "http://sasoftgroups.com/handy/GET_MESSAGE.php";
 
+    public static final String GET_FULL_CHAT = "http://sasoftgroups.com/handy/GET_CHAT.php";
+
+    public static final String SEND_MESSAGE = "http://sasoftgroups.com/handy/sendMassage.php";
+
+
 
     public static final String CurrentUserID = "id";
     public static final String LOGIN_FAIL = "failure";
     public static final String EMAIL_SHARED_PREF = "email";
     public static final String LOGGEDIN_SHARED_PREF = "loggedin";
-    public static final String HELPID = "0";
+    public static final String HELPID = "HELPID";
+    public static final String Sender = "SID";
+    public static final String CHELPOD = "CHATID";
 
 
     public static final String CurrentUserName = "name";

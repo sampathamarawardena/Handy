@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/chatmenu_Complete"
+        android:title="Complete Help" />
+    <item
+        android:id="@+id/chatmenu_Report"
+        android:title="Report" />
+    <item android:title="More.." />
+</menu>

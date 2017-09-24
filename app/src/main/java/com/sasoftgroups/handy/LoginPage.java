@@ -6,8 +6,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -24,6 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LoginPage extends AppCompatActivity {
+    ConnectionDetector cd;
     private EditText UsernameEt;
     private EditText PasswordEt;
     private boolean loggedIn = false;
@@ -57,78 +63,132 @@ public class LoginPage extends AppCompatActivity {
             finish();
         }
 
-        //sign_in_register = (Button) findViewById(R.id.btn_Login);
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
     }
+
+    private boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity != null) {
+            NetworkInfo[] info = connectivity.getAllNetworkInfo();
+            if (info != null) {
+                for (int i = 0; i < info.length; i++) {
+                    Log.w("INTERNET:", String.valueOf(i));
+                    if (info[i].getState() == NetworkInfo.State.CONNECTED) {
+                        Log.w("INTERNET:", "connected!");
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
 
     @Override
     protected void onResume() {
         super.onResume();
-        //In onresume fetching value from sharedpreference
-        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-        //Fetching the boolean value form sharedpreferences
-        loggedIn = sharedPreferences.getBoolean(config.LOGGEDIN_SHARED_PREF, false);
-        //If we will get true
-        if (loggedIn) {
-            //We will start the Profile Activity
-            Intent intent = new Intent(LoginPage.this, HomePage.class);
-            startActivity(intent);
-        }
-    }
-
-
-    private void login() {
-        //Getting values from edit texts
-        final String email = UsernameEt.getText().toString().trim();
-        final String password = PasswordEt.getText().toString().trim();
-
-        //Creating a string request
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, config.LOGIN_URL,
-                new Response.Listener<String>() {
-                    private Activity activity;
-
-                    public Activity getActivity() {
-                        return activity;
-                    }
-
-                    @Override
-                    public void onResponse(String response) {
-                        //If we are getting success from server
-                        if (response.equalsIgnoreCase(config.LOGIN_FAIL)) {
-                            Toast.makeText(LoginPage.this, "Invalid username or password", Toast.LENGTH_LONG).show();
-                        } else {
-                            SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-                            SharedPreferences.Editor editors = sharedPref.edit();
-                            editors.putBoolean(config.LOGGEDIN_SHARED_PREF, true);
-                            editors.putString(config.EMAIL_SHARED_PREF, email);
-                            editors.commit();
-
-                            //Starting profile activity
-                            Intent intent = new Intent(LoginPage.this, HomePage.class);
-                            startActivity(intent);
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                //Adding parameters to request
-                params.put("email", email);
-                params.put("password", password);
-
-                //returning parameter
-                return params;
+        if (isNetworkAvailable(this) == true) {
+            //In onresume fetching value from sharedpreference
+            SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+            //Fetching the boolean value form sharedpreferences
+            loggedIn = sharedPreferences.getBoolean(config.LOGGEDIN_SHARED_PREF, false);
+            //If we will get true
+            if (loggedIn) {
+                //We will start the Profile Activity
+                Intent intent = new Intent(LoginPage.this, HomePage.class);
+                startActivity(intent);
             }
-        };
+        } else {
+            AlertDialog.Builder builder;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+            } else {
+                builder = new AlertDialog.Builder(this);
+            }
+            builder.setTitle("INFORMATION")
+                    .setMessage("Please Check Your Internet Connection")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // continue with delete
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
 
-        //Adding the string request to the queue
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
+    }
+    private void login() {
+        if (isNetworkAvailable(this) == true) {
+            //Getting values from edit texts
+            final String email = UsernameEt.getText().toString().trim();
+            final String password = PasswordEt.getText().toString().trim();
+
+            //Creating a string request
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, config.LOGIN_URL,
+                    new Response.Listener<String>() {
+                        private Activity activity;
+
+                        public Activity getActivity() {
+                            return activity;
+                        }
+
+                        @Override
+                        public void onResponse(String response) {
+                            //If we are getting success from server
+                            if (response.equalsIgnoreCase(config.LOGIN_FAIL)) {
+                                Toast.makeText(LoginPage.this, "Invalid username or password", Toast.LENGTH_LONG).show();
+                            } else {
+                                SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editors = sharedPref.edit();
+                                editors.putBoolean(config.LOGGEDIN_SHARED_PREF, true);
+                                editors.putString(config.EMAIL_SHARED_PREF, email);
+                                editors.commit();
+
+                                //Starting profile activity
+                                Intent intent = new Intent(LoginPage.this, HomePage.class);
+                                startActivity(intent);
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+                        }
+                    }) {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<>();
+                    //Adding parameters to request
+                    params.put("email", email);
+                    params.put("password", password);
+
+                    //returning parameter
+                    return params;
+                }
+            };
+
+            //Adding the string request to the queue
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            requestQueue.add(stringRequest);
+        } else {
+            AlertDialog.Builder builder;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+            } else {
+                builder = new AlertDialog.Builder(this);
+            }
+            builder.setTitle("INFORMATION")
+                    .setMessage("Please Check Your Internet Connection")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // continue with delete
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
     }
 
     public void btn_Login(View view) {

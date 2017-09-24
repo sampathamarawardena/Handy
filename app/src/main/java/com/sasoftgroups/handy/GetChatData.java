@@ -11,7 +11,7 @@ import android.widget.TextView;
  * Created by ArunaAmarawardena on 7/18/2017.
  */
 
-public class GetStartMessageData extends ArrayAdapter<String> {
+public class GetChatData extends ArrayAdapter<String> {
     private String[] bothIDs;
     private String[] hid;
     private String[] senderID;
@@ -21,8 +21,8 @@ public class GetStartMessageData extends ArrayAdapter<String> {
     private String[] senderName;
     private Activity context;
 
-    public GetStartMessageData(Activity context, String[] hid, String[] senderID, String[] senderName, String[] message, String[] datetime, String[] topic, String[] bothIDs) {
-        super(context, R.layout.all_start_message_listview, bothIDs);
+    public GetChatData(Activity context, String[] hid, String[] senderID, String[] senderName, String[] message, String[] datetime, String[] topic) {
+        super(context, R.layout.chatlog, hid);
         this.context = context;
         this.hid = hid;
         this.senderID = senderID;
@@ -30,25 +30,21 @@ public class GetStartMessageData extends ArrayAdapter<String> {
         this.message = message;
         this.datetime = datetime;
         this.topic = topic;
-        this.bothIDs = bothIDs;
-
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
-        View listViewItem = inflater.inflate(R.layout.all_start_message_listview, null, true);
+        View ChatLogItems = inflater.inflate(R.layout.chatlog, null, true);
 
-        TextView TOPIC = (TextView) listViewItem.findViewById(R.id.tv_Message_Topic);
-        TextView Sender = (TextView) listViewItem.findViewById(R.id.tv_Message_Sender);
-        TextView HID = (TextView) listViewItem.findViewById(R.id.tv_Message_hid);
+        TextView TOPIC = (TextView) ChatLogItems.findViewById(R.id.tv_Message);
+        TextView Sender = (TextView) ChatLogItems.findViewById(R.id.tv_sender);
+        TextView HID = (TextView) ChatLogItems.findViewById(R.id.tv_MessageTime);
 
-        String se = hid[position] + "" + senderID[position];
-        TOPIC.setText(topic[position]);
+        TOPIC.setText(message[position]);
         Sender.setText(senderName[position]);
-        HID.setText(se);
+        HID.setText(datetime[position]);
 
-
-        return listViewItem;
+        return ChatLogItems;
     }
 }

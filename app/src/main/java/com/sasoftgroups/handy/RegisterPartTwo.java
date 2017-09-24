@@ -7,8 +7,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
@@ -81,51 +85,91 @@ public class RegisterPartTwo extends AppCompatActivity {
         keyword.setAdapter(arrayAdapter);
     }
 
+    private boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity != null) {
+            NetworkInfo[] info = connectivity.getAllNetworkInfo();
+            if (info != null) {
+                for (int i = 0; i < info.length; i++) {
+                    Log.w("INTERNET:", String.valueOf(i));
+                    if (info[i].getState() == NetworkInfo.State.CONNECTED) {
+                        Log.w("INTERNET:", "connected!");
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     public void onClickRegAdd(View view) {
         final String keys = keyword.getText().toString();
         final String birth = dob.getText().toString();
-        SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-        final String id = sharedPref.getString(config.CurrentUserID, "");
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, config.UPDATE_REGISTERED_USER,
-                new Response.Listener<String>() {
+        if (keys.isEmpty() || birth.isEmpty()) {
+            if (isNetworkAvailable(this) == true) {
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, config.UPDATE_REGISTERED_USER,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                if (response.equals("success")) {
+                                    new AlertDialog.Builder(RegisterPartTwo.this)
+                                            .setIcon(android.R.drawable.ic_dialog_info)
+                                            .setTitle("Welcome to Handy")
+                                            .setMessage("You are successfully Registered to Handy")
+                                            .setPositiveButton("Login to Handy", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    Intent login = new Intent(RegisterPartTwo.this, LoginPage.class);
+                                                    startActivity(login);
+                                                }
+                                            }).show();
+                                } else if (response.equals("fail")) {
+                                    Toast.makeText(RegisterPartTwo.this, "Something going wrong", Toast.LENGTH_LONG).show();
+                                } else {
+                                    Toast.makeText(RegisterPartTwo.this, response, Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(RegisterPartTwo.this, error.toString(), Toast.LENGTH_LONG).show();
+                            }
+                        }) {
                     @Override
-                    public void onResponse(String response) {
-                        if (response.equals("success")) {
-                            new AlertDialog.Builder(RegisterPartTwo.this)
-                                    .setIcon(android.R.drawable.ic_dialog_info)
-                                    .setTitle("Welcome to Handy")
-                                    .setMessage("You are successfully Registered to Handy")
-                                    .setPositiveButton("Login to Handy", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            Intent login = new Intent(RegisterPartTwo.this, LoginPage.class);
-                                            startActivity(login);
-                                        }
-                                    }).show();
-                        } else if (response.equals("fail")) {
-                            Toast.makeText(RegisterPartTwo.this, "Something going wrong", Toast.LENGTH_LONG).show();
-                        } else {
-                            Toast.makeText(RegisterPartTwo.this, response, Toast.LENGTH_LONG).show();
-                        }
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                        final String id = sharedPref.getString(config.CurrentUserID, "");
+
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("str_id", id);
+                        params.put("str_keys", keys);
+                        params.put("str_dob", bdate);
+                        return params;
                     }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(RegisterPartTwo.this, error.toString(), Toast.LENGTH_LONG).show();
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("str_id", id);
-                params.put("str_keys", keys);
-                params.put("str_dob", bdate);
-                return params;
+                };
+                RequestQueue requestQueue = Volley.newRequestQueue(this);
+                requestQueue.add(stringRequest);
+            } else {
+                AlertDialog.Builder builder;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+                } else {
+                    builder = new AlertDialog.Builder(this);
+                }
+                builder.setTitle("INFORMATION")
+                        .setMessage("Please Check Your Internet Connection")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // continue with delete
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
             }
-        };
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
+        } else {
+            Toast.makeText(RegisterPartTwo.this, "Some Field are Empty. Please re-check", Toast.LENGTH_LONG).show();
+        }
     }
 }

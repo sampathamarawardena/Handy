@@ -8,7 +8,7 @@ import org.json.JSONObject;
  * Created by ArunaAmarawardena on 7/18/2017.
  */
 
-public class JSON_StartMessage {
+public class JSON_ChatMessage {
     public static final String JSON_ARRAY = "result";
 
     public static final String KEY_HID = "hid";
@@ -25,13 +25,12 @@ public class JSON_StartMessage {
     public static String[] datetime;
     public static String[] topic;
     public static String[] senderName;
-    public static String[] bothIDs;
 
     private JSONArray SMessage = null;
 
     private String json;
 
-    public JSON_StartMessage(String json) {
+    public JSON_ChatMessage(String json) {
         this.json = json;
     }
 
@@ -42,7 +41,6 @@ public class JSON_StartMessage {
             SMessage = jsonObject.getJSONArray(JSON_ARRAY);
 
             senderID = new String[SMessage.length()];
-            bothIDs = new String[SMessage.length()];
             hid = new String[SMessage.length()];
             senderName = new String[SMessage.length()];
             message = new String[SMessage.length()];
@@ -58,7 +56,6 @@ public class JSON_StartMessage {
                 message[i] = jo.getString(KEY_MESSEAGE);
                 datetime[i] = jo.getString(KEY_DIS);
                 topic[i] = jo.getString(KEY_TOPIC);
-                bothIDs[i] = (jo.getString(KEY_HID) + "," + jo.getString(KEY_SENDER_ID));
             }
         } catch (JSONException e) {
             e.printStackTrace();

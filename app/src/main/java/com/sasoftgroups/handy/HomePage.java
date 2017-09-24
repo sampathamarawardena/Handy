@@ -5,8 +5,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -58,70 +62,73 @@ public class HomePage extends AppCompatActivity {
                 .show();
     }
 
+    private boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity != null) {
+            NetworkInfo[] info = connectivity.getAllNetworkInfo();
+            if (info != null) {
+                for (int i = 0; i < info.length; i++) {
+                    Log.w("INTERNET:", String.valueOf(i));
+                    if (info[i].getState() == NetworkInfo.State.CONNECTED) {
+                        Log.w("INTERNET:", "connected!");
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     //region Methods
     public void getUserDetails() {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, config.GET_USER_DETAILS,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editors = sharedPref.edit();
-                        editors.putString(config.CurrentUserID, response);
-                        editors.commit();
-                        //LoadCategory();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(HomePage.this, error.toString(), Toast.LENGTH_LONG).show();
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-                String email = sharedPref.getString(config.EMAIL_SHARED_PREF, "");
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("email", email);
-                return params;
+        if (isNetworkAvailable(this) == true) {
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, config.GET_USER_DETAILS,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editors = sharedPref.edit();
+                            editors.putString(config.CurrentUserID, response);
+                            editors.commit();
+                            //LoadCategory();
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(HomePage.this, error.toString(), Toast.LENGTH_LONG).show();
+                        }
+                    }) {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                    String email = sharedPref.getString(config.EMAIL_SHARED_PREF, "");
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("email", email);
+                    return params;
+                }
+            };
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            requestQueue.add(stringRequest);
+        } else {
+            AlertDialog.Builder builder;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+            } else {
+                builder = new AlertDialog.Builder(this);
             }
-        };
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
-
+            builder.setTitle("INFORMATION")
+                    .setMessage("Please Check Your Internet Connection")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // continue with delete
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
 
     }
-/*
-    public void LoadCategory() {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, config.GET_USER_KEYWORDS,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editors = sharedPref.edit();
-                        editors.putString(config.USER_KEYS, response);
-                        editors.commit();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(HomePage.this, error.toString(), Toast.LENGTH_LONG).show();
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-                String email = sharedPref.getString(config.EMAIL_SHARED_PREF, "");
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("email", email);
-                return params;
-            }
-        };
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
-    }
-*/
     //endregion
 
     //region Home Button Click
