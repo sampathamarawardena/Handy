@@ -37,6 +37,11 @@ public class config {
 
     public static final String SEND_MESSAGE = "http://sasoftgroups.com/handy/sendMassage.php";
 
+    public static final String POST_COMPLETE_HELP = "http://www.sasoftgroups.com/handy/POST_COMPLETE_HELP.php";
+
+    public static final String add_Review = "http://sasoftgroups.com/handy/addReview.php";
+
+    public static final String GET_PROFILE_DATA = "http://sasoftgroups.com/handy/GET_MYPROFILE_DATA.php";
 
 
     public static final String CurrentUserID = "id";

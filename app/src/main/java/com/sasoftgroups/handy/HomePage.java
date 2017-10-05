@@ -33,8 +33,8 @@ public class HomePage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
-        messegButtonImage();
-        notificationButtonImage();
+        //messegButtonImage();
+        //notificationButtonImage();
         getUserDetails();
     }
 
@@ -62,6 +62,7 @@ public class HomePage extends AppCompatActivity {
                 .show();
     }
 
+    //region Network Connection Check Method
     private boolean isNetworkAvailable(Context context) {
         ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivity != null) {
@@ -78,6 +79,7 @@ public class HomePage extends AppCompatActivity {
         }
         return false;
     }
+    //endregion
 
     //region Methods
     public void getUserDetails() {
@@ -218,7 +220,6 @@ public class HomePage extends AppCompatActivity {
     }
 
     public void btn_Logout(View view) {
-        //Creating an alert dialog to confirm logout
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage("Are you sure you want to logout?");
         alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {

@@ -3,6 +3,7 @@ package com.sasoftgroups.handy;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -108,11 +109,18 @@ public class RegisterPartTwo extends AppCompatActivity {
 
         if (keys.isEmpty() || birth.isEmpty()) {
             if (isNetworkAvailable(this) == true) {
+                final ProgressDialog progressDoalog;
+                progressDoalog = new ProgressDialog(this);
+                progressDoalog.setMessage("Loading....");
+                progressDoalog.setTitle("Please Wait a Second..!");
+                progressDoalog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDoalog.show();
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, config.UPDATE_REGISTERED_USER,
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
                                 if (response.equals("success")) {
+                                    progressDoalog.dismiss();
                                     new AlertDialog.Builder(RegisterPartTwo.this)
                                             .setIcon(android.R.drawable.ic_dialog_info)
                                             .setTitle("Welcome to Handy")
@@ -125,8 +133,10 @@ public class RegisterPartTwo extends AppCompatActivity {
                                                 }
                                             }).show();
                                 } else if (response.equals("fail")) {
+                                    progressDoalog.dismiss();
                                     Toast.makeText(RegisterPartTwo.this, "Something going wrong", Toast.LENGTH_LONG).show();
                                 } else {
+                                    progressDoalog.dismiss();
                                     Toast.makeText(RegisterPartTwo.this, response, Toast.LENGTH_LONG).show();
                                 }
                             }
@@ -162,7 +172,6 @@ public class RegisterPartTwo extends AppCompatActivity {
                         .setMessage("Please Check Your Internet Connection")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                // continue with delete
                             }
                         })
                         .setIcon(android.R.drawable.ic_dialog_alert)

@@ -1,7 +1,7 @@
 package com.sasoftgroups.handy;
 
-import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,8 +12,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -29,7 +29,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LoginPage extends AppCompatActivity {
-    ConnectionDetector cd;
     private EditText UsernameEt;
     private EditText PasswordEt;
     private boolean loggedIn = false;
@@ -73,9 +72,7 @@ public class LoginPage extends AppCompatActivity {
             NetworkInfo[] info = connectivity.getAllNetworkInfo();
             if (info != null) {
                 for (int i = 0; i < info.length; i++) {
-                    Log.w("INTERNET:", String.valueOf(i));
                     if (info[i].getState() == NetworkInfo.State.CONNECTED) {
-                        Log.w("INTERNET:", "connected!");
                         return true;
                     }
                 }
@@ -84,18 +81,13 @@ public class LoginPage extends AppCompatActivity {
         return false;
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
         if (isNetworkAvailable(this) == true) {
-            //In onresume fetching value from sharedpreference
             SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-            //Fetching the boolean value form sharedpreferences
             loggedIn = sharedPreferences.getBoolean(config.LOGGEDIN_SHARED_PREF, false);
-            //If we will get true
             if (loggedIn) {
-                //We will start the Profile Activity
                 Intent intent = new Intent(LoginPage.this, HomePage.class);
                 startActivity(intent);
             }
@@ -110,7 +102,6 @@ public class LoginPage extends AppCompatActivity {
                     .setMessage("Please Check Your Internet Connection")
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            // continue with delete
                         }
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
@@ -118,81 +109,81 @@ public class LoginPage extends AppCompatActivity {
         }
 
     }
+
     private void login() {
-        if (isNetworkAvailable(this) == true) {
-            //Getting values from edit texts
-            final String email = UsernameEt.getText().toString().trim();
-            final String password = PasswordEt.getText().toString().trim();
-
-            //Creating a string request
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, config.LOGIN_URL,
-                    new Response.Listener<String>() {
-                        private Activity activity;
-
-                        public Activity getActivity() {
-                            return activity;
-                        }
-
-                        @Override
-                        public void onResponse(String response) {
-                            //If we are getting success from server
-                            if (response.equalsIgnoreCase(config.LOGIN_FAIL)) {
-                                Toast.makeText(LoginPage.this, "Invalid username or password", Toast.LENGTH_LONG).show();
-                            } else {
-                                SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-                                SharedPreferences.Editor editors = sharedPref.edit();
-                                editors.putBoolean(config.LOGGEDIN_SHARED_PREF, true);
-                                editors.putString(config.EMAIL_SHARED_PREF, email);
-                                editors.commit();
-
-                                //Starting profile activity
-                                Intent intent = new Intent(LoginPage.this, HomePage.class);
-                                startActivity(intent);
+        //Getting values from edit texts
+        final String email = UsernameEt.getText().toString().trim();
+        final String password = PasswordEt.getText().toString().trim();
+        if (!email.isEmpty() || !password.isEmpty()) {
+            if (isNetworkAvailable(this) == true) {
+                final ProgressDialog progressDoalog;
+                progressDoalog = new ProgressDialog(this);
+                progressDoalog.setMessage("Loading....");
+                progressDoalog.setTitle("Please Wait a Second..!");
+                progressDoalog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDoalog.show();
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, config.LOGIN_URL,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                if (response.equalsIgnoreCase(config.LOGIN_FAIL)) {
+                                    progressDoalog.dismiss();
+                                    Toast.makeText(LoginPage.this, "Invalid username or password", Toast.LENGTH_LONG).show();
+                                } else {
+                                    SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editors = sharedPref.edit();
+                                    editors.putBoolean(config.LOGGEDIN_SHARED_PREF, true);
+                                    editors.putString(config.EMAIL_SHARED_PREF, email);
+                                    editors.commit();
+                                    progressDoalog.dismiss();
+                                    Intent intent = new Intent(LoginPage.this, HomePage.class);
+                                    startActivity(intent);
+                                }
                             }
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-
-                        }
-                    }) {
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String, String> params = new HashMap<>();
-                    //Adding parameters to request
-                    params.put("email", email);
-                    params.put("password", password);
-
-                    //returning parameter
-                    return params;
-                }
-            };
-
-            //Adding the string request to the queue
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
-            requestQueue.add(stringRequest);
-        } else {
-            AlertDialog.Builder builder;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                            }
+                        }) {
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<>();
+                        params.put("email", email);
+                        params.put("password", password);
+                        return params;
+                    }
+                };
+                RequestQueue requestQueue = Volley.newRequestQueue(this);
+                requestQueue.add(stringRequest);
             } else {
-                builder = new AlertDialog.Builder(this);
+                AlertDialog.Builder builder;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+                } else {
+                    builder = new AlertDialog.Builder(this);
+                }
+                builder.setTitle("INFORMATION")
+                        .setMessage("Please Check Your Internet Connection")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // continue with delete
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
             }
-            builder.setTitle("INFORMATION")
-                    .setMessage("Please Check Your Internet Connection")
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // continue with delete
-                        }
-                    })
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .show();
+        } else {
+            Toast.makeText(LoginPage.this, "Invalid username or password", Toast.LENGTH_LONG).show();
         }
+
     }
 
     public void btn_Login(View view) {
+        Button b = (Button) findViewById(R.id.btn_Login);
+        b.setEnabled(false);
         login();
+        b.setEnabled(true);
     }
 
     public void btnSingUp(View view) {

@@ -1,6 +1,7 @@
 package com.sasoftgroups.handy;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -35,13 +36,11 @@ public class Messenger extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messenger);
-
         StartMessageListView = (ListView) findViewById(R.id.listView_StartMessage);
-
         GetStartMessage();
-
     }
 
+    //region Network Connecton Check
     private boolean isNetworkAvailable(Context context) {
         ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivity != null) {
@@ -58,9 +57,18 @@ public class Messenger extends AppCompatActivity {
         }
         return false;
     }
+    //endregion
 
+    //region Get Main Messages to List View
     public void GetStartMessage() {
         if (isNetworkAvailable(this) == true) {
+            final ProgressDialog progressDoalog;
+            progressDoalog = new ProgressDialog(this);
+            progressDoalog.setMessage("Loading....");
+            progressDoalog.setTitle("Please Wait a Second..!");
+            progressDoalog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDoalog.show();
+
             SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
             final String id = sharedPref.getString(config.CurrentUserID, "");
             StringRequest stringRequest = new StringRequest(Request.Method.POST, config.GET_START_MESSAGE,
@@ -68,6 +76,7 @@ public class Messenger extends AppCompatActivity {
                         @Override
                         public void onResponse(String response) {
                             getmessageJSON(response);
+                            progressDoalog.dismiss();
                         }
                     },
                     new Response.ErrorListener() {
@@ -112,6 +121,9 @@ public class Messenger extends AppCompatActivity {
         StartMessageListView.setAdapter(cl);
     }
 
+    //endregion
+
+    //region Click View Message Button
     public void onClick_ViewMessage(View view) throws JSONException {
         if (isNetworkAvailable(this) == true) {
             int position = 0;
@@ -152,4 +164,5 @@ public class Messenger extends AppCompatActivity {
                     .show();
         }
     }
+    //endregion
 }

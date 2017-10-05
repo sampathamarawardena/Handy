@@ -3,6 +3,7 @@ package com.sasoftgroups.handy;
 //region Import Library's
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -113,6 +114,13 @@ public class FriednsList extends AppCompatActivity implements TabLayout.OnTabSel
 
     //region Get All Friends
     private void getAllFriends() {
+        final ProgressDialog progressDoalog;
+        progressDoalog = new ProgressDialog(this);
+        progressDoalog.setMessage("Loading....");
+        progressDoalog.setTitle("Please Wait a Second..!");
+        progressDoalog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDoalog.show();
+
         SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         final String id = sharedPref.getString(config.CurrentUserID, "");
         StringRequest stringRequest = new StringRequest(Request.Method.POST, config.GET_ALL_FRIENDS,
@@ -120,6 +128,7 @@ public class FriednsList extends AppCompatActivity implements TabLayout.OnTabSel
                     @Override
                     public void onResponse(String response) {
                         getAllFriendsJSON(response);
+                        progressDoalog.dismiss();
                     }
                 },
                 new Response.ErrorListener() {
@@ -164,6 +173,13 @@ public class FriednsList extends AppCompatActivity implements TabLayout.OnTabSel
     //region Get All Users To List View
     private void GetAllUsers() {
         if (isNetworkAvailable(this) == true) {
+            final ProgressDialog progressDoalog;
+            progressDoalog = new ProgressDialog(this);
+            progressDoalog.setMessage("Loading....");
+            progressDoalog.setTitle("Please Wait a Second..!");
+            progressDoalog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDoalog.show();
+
             SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
             final String id = sharedPref.getString(config.CurrentUserID, "");
 
@@ -172,6 +188,7 @@ public class FriednsList extends AppCompatActivity implements TabLayout.OnTabSel
                         @Override
                         public void onResponse(String response) {
                             AllUsersJSON(response);
+                            progressDoalog.dismiss();
                         }
                     },
                     new Response.ErrorListener() {
@@ -220,6 +237,13 @@ public class FriednsList extends AppCompatActivity implements TabLayout.OnTabSel
     //region Get All Friends Requests to List View
     private void GetAllFriendRequests() {
         if (isNetworkAvailable(this) == true) {
+            final ProgressDialog progressDoalog;
+            progressDoalog = new ProgressDialog(this);
+            progressDoalog.setMessage("Loading....");
+            progressDoalog.setTitle("Please Wait a Second..!");
+            progressDoalog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDoalog.show();
+
             SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
             final String id = sharedPref.getString(config.CurrentUserID, "");
             StringRequest stringRequest = new StringRequest(Request.Method.POST, config.ALL_FRIENDSREQUEST_LINK,
@@ -227,6 +251,7 @@ public class FriednsList extends AppCompatActivity implements TabLayout.OnTabSel
                         @Override
                         public void onResponse(String response) {
                             showFriendrequestJSON(response);
+                            progressDoalog.dismiss();
                         }
                     },
                     new Response.ErrorListener() {
@@ -276,9 +301,16 @@ public class FriednsList extends AppCompatActivity implements TabLayout.OnTabSel
     //endregion
 
     //region On Click Send Friend Request
-
     public void onClick_SendFRequest(View view) throws JSONException {
         if (isNetworkAvailable(this) == true) {
+
+            final ProgressDialog progressDoalog;
+            progressDoalog = new ProgressDialog(this);
+            progressDoalog.setMessage("Friend Request Sending....");
+            progressDoalog.setTitle("Please Wait a Second..!");
+            progressDoalog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDoalog.show();
+
         SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         final String id = sharedPref.getString(config.CurrentUserID, "");
         int position = 0;
@@ -289,6 +321,7 @@ public class FriednsList extends AppCompatActivity implements TabLayout.OnTabSel
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        progressDoalog.dismiss();
                         Toast.makeText(FriednsList.this, "Friend Request Sent", Toast.LENGTH_LONG).show();
                     }
                 },
@@ -331,6 +364,7 @@ public class FriednsList extends AppCompatActivity implements TabLayout.OnTabSel
     //endregion
 
     //region Check Friend - Not using yet
+    /*
     public boolean CheckFriend(final String CurrentUID, final String FriendUID) {
         if (isNetworkAvailable(this) == true) {
             final boolean[] boolFrind = {false};
@@ -380,12 +414,21 @@ public class FriednsList extends AppCompatActivity implements TabLayout.OnTabSel
                     .show();
         }
         return false;
-    }
+    } */
     //endregion
 
     //region On Click Accept Friend Request
     public void onClick_AcceptFriendRequest(View view) {
         if (isNetworkAvailable(this) == true) {
+            final ProgressDialog progressDoalog;
+            progressDoalog = new ProgressDialog(this);
+            progressDoalog.setMax(100);
+            progressDoalog.setMessage("Its loading....");
+            progressDoalog.setTitle("ProgressDialog bar example");
+            progressDoalog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            // show it
+            progressDoalog.show();
+
             SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
             final String id = sharedPref.getString(config.CurrentUserID, "");
             int position = 0;

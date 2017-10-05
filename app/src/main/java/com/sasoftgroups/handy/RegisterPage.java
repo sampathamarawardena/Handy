@@ -1,6 +1,7 @@
 package com.sasoftgroups.handy;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -86,6 +87,12 @@ public class RegisterPage extends AppCompatActivity {
         } else {
             if (str_password.equals(str_CPassword)) {
                 if (isNetworkAvailable(this) == true) {
+                    final ProgressDialog progressDoalog;
+                    progressDoalog = new ProgressDialog(this);
+                    progressDoalog.setMessage("Loading....");
+                    progressDoalog.setTitle("Please Wait a Second..!");
+                    progressDoalog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    progressDoalog.show();
                     StringRequest stringRequest = new StringRequest(Request.Method.POST, config.REGISTER_URL,
                             new Response.Listener<String>() {
                                 @Override
@@ -94,6 +101,7 @@ public class RegisterPage extends AppCompatActivity {
                                         Toast.makeText(RegisterPage.this, "There is an error please check your internet connection", Toast.LENGTH_LONG).show();
                                     } else {
                                         if (response.equals("email")) {
+                                            progressDoalog.dismiss();
                                             new AlertDialog.Builder(RegisterPage.this)
                                                     .setIcon(android.R.drawable.ic_dialog_info)
                                                     .setTitle("Alredy Have Account")
@@ -113,8 +121,10 @@ public class RegisterPage extends AppCompatActivity {
                                                         }
                                                     }).show();
                                         } else if (response.equals("fail")) {
+                                            progressDoalog.dismiss();
                                             Toast.makeText(RegisterPage.this, "Please Try again later there is any server error", Toast.LENGTH_LONG).show();
                                         } else {
+                                            progressDoalog.dismiss();
                                             SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
                                             SharedPreferences.Editor editors = sharedPref.edit();
                                             editors.putString(config.CurrentUserID, response);
@@ -132,6 +142,7 @@ public class RegisterPage extends AppCompatActivity {
                             new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
+                                    progressDoalog.dismiss();
                                     Toast.makeText(RegisterPage.this, error.toString(), Toast.LENGTH_LONG).show();
                                 }
                             }) {

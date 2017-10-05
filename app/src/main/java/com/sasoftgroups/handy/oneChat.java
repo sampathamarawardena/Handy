@@ -3,6 +3,7 @@ package com.sasoftgroups.handy;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -42,8 +43,6 @@ public class oneChat extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_one_chat);
 
-        //Toolbar mt = (Toolbar) findViewById(R.id.)
-
         chatLog = (ListView) findViewById(R.id.listView_MessageList);
         message = (EditText) findViewById(R.id.edt_Message);
 
@@ -60,7 +59,6 @@ public class oneChat extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             public void run() {
                 GETCHAT();
-                //Toast.makeText(Messenger.this, "Hi", Toast.LENGTH_SHORT).show();
                 handler.postDelayed(this, delay);
             }
         }, delay);
@@ -99,10 +97,10 @@ public class oneChat extends AppCompatActivity {
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.chatmenu_Complete:
-                Toast.makeText(oneChat.this, "Complete", Toast.LENGTH_SHORT).show();
+                ComnpleteChat();
                 return true;
             case R.id.chatmenu_Report:
-                Toast.makeText(oneChat.this, "Report", Toast.LENGTH_SHORT).show();
+                ReportChat();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -170,7 +168,6 @@ public class oneChat extends AppCompatActivity {
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
-                                //Toast.makeText(oneChat.this, "Message", Toast.LENGTH_SHORT).show();
                                 GETCHAT();
                                 message.setText("");
                             }
@@ -204,7 +201,6 @@ public class oneChat extends AppCompatActivity {
                         .setMessage("Please Check Your Internet Connection")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                // continue with delete
                             }
                         })
                         .setIcon(android.R.drawable.ic_dialog_alert)
@@ -215,4 +211,73 @@ public class oneChat extends AppCompatActivity {
         }
     }
 
+    public void ComnpleteChat() {
+        if (isNetworkAvailable(this) == true) {
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, config.POST_COMPLETE_HELP,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            Toast.makeText(oneChat.this, "Complete", Toast.LENGTH_SHORT).show();
+                            AlertDialog.Builder builder;
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                builder = new AlertDialog.Builder(oneChat.this, android.R.style.Theme_Material_Dialog_Alert);
+                            } else {
+                                builder = new AlertDialog.Builder(oneChat.this);
+                            }
+                            builder.setTitle("Time To Thanks")
+                                    .setMessage("Please Rate for Help")
+                                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            Intent rate = new Intent(oneChat.this, HelpFeedback.class);
+                                            startActivity(rate);
+                                        }
+                                    })
+                                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            Intent home = new Intent(oneChat.this, HomePage.class);
+                                            startActivity(home);
+                                        }
+                                    })
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .show();
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(oneChat.this, error.toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    }) {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("hid", helpid);
+                    params.put("uid", id);
+                    params.put("sender", sender);
+                    return params;
+                }
+            };
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            requestQueue.add(stringRequest);
+        } else {
+            AlertDialog.Builder builder;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+            } else {
+                builder = new AlertDialog.Builder(this);
+            }
+            builder.setTitle("INFORMATION")
+                    .setMessage("Please Check Your Internet Connection")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
+    }
+
+    public void ReportChat() {
+        Toast.makeText(oneChat.this, "Report", Toast.LENGTH_SHORT).show();
+    }
 }

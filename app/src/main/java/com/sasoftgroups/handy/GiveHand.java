@@ -1,6 +1,7 @@
 package com.sasoftgroups.handy;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -61,6 +62,12 @@ public class GiveHand extends AppCompatActivity {
     //region Get All Help Requests
     private void getAllHelpRequests() {
         if (isNetworkAvailable(this) == true) {
+            final ProgressDialog progressDoalog;
+            progressDoalog = new ProgressDialog(this);
+            progressDoalog.setMessage("Loading....");
+            progressDoalog.setTitle("Please Wait a Second..!");
+            progressDoalog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDoalog.show();
             SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
             final String id = sharedPref.getString(config.CurrentUserID, "");
             StringRequest stringRequest = new StringRequest(Request.Method.POST, config.GET_HELP_REQUEST,
@@ -68,11 +75,13 @@ public class GiveHand extends AppCompatActivity {
                         @Override
                         public void onResponse(String response) {
                             getAllHelpsJSON(response);
+                            progressDoalog.dismiss();
                         }
                     },
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
+                            progressDoalog.dismiss();
                             Toast.makeText(GiveHand.this, error.getMessage(), Toast.LENGTH_LONG).show();
                         }
                     }) {
@@ -113,30 +122,36 @@ public class GiveHand extends AppCompatActivity {
     }
     //endregion-
 
-
+    //region Accept Hand Request
     public void onClick_GiveHand(View view) throws JSONException {
         if (isNetworkAvailable(this) == true) {
+            final ProgressDialog progressDoalog;
+            progressDoalog = new ProgressDialog(this);
+            progressDoalog.setMessage("Loading....");
+            progressDoalog.setTitle("Please Wait a Second..!");
+            progressDoalog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDoalog.show();
+
             int position = 0;
             position = helpsListView.getPositionForView((LinearLayout) view.getParent());
             Object items = helpsListView.getItemAtPosition(position);
 
             final String tv_Helps_hid = items.toString();
-
             Toast.makeText(GiveHand.this, tv_Helps_hid, Toast.LENGTH_SHORT).show();
-
             SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
             final String id = sharedPref.getString(config.CurrentUserID, "");
-
             StringRequest stringRequest = new StringRequest(Request.Method.POST, config.ACCEPT_HELP_REQUEST,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
+                            progressDoalog.dismiss();
                             Toast.makeText(GiveHand.this, "Accepted", Toast.LENGTH_LONG).show();
                         }
                     },
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
+                            progressDoalog.dismiss();
                             Toast.makeText(GiveHand.this, error.toString(), Toast.LENGTH_LONG).show();
                         }
                     }) {
@@ -161,11 +176,11 @@ public class GiveHand extends AppCompatActivity {
                     .setMessage("Please Check Your Internet Connection")
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            // continue with delete
                         }
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
         }
     }
+    //endregion
 }

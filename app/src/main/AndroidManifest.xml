@@ -34,7 +34,7 @@
         <activity
             android:name=".oneChat"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".popupwindow"></activity>
+        <activity android:name=".HelpFeedback"></activity>
     </application>
 
 </manifest>

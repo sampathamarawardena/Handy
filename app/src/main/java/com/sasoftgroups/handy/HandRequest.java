@@ -1,6 +1,7 @@
 package com.sasoftgroups.handy;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -29,12 +30,15 @@ import java.util.Map;
 
 public class HandRequest extends AppCompatActivity {
 
+    //region variable declaration
     EditText topic, description;
     String keywordsSearch = "";
     String UTopic = "";
     Spinner category;
     ToggleButton type;
+    //endregion
 
+    //region onCreate
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,13 +47,10 @@ public class HandRequest extends AppCompatActivity {
         description = (EditText) findViewById(R.id.edt_handRequest_Description);
         category = (Spinner) findViewById(R.id.edt_handRequest_Spinner);
         type = (ToggleButton) findViewById(R.id.tb_handRequest_Type);
-        loadSpinner();
     }
+    //endregion
 
-    public void loadSpinner() {
-
-    }
-
+    //region Internet Connection Check
     private boolean isNetworkAvailable(Context context) {
         ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivity != null) {
@@ -66,7 +67,9 @@ public class HandRequest extends AppCompatActivity {
         }
         return false;
     }
+    //endregion
 
+    //region Generate Keyword
     public void GenerateKeyword() {
         UTopic = topic.getText().toString();
         int count = 0;
@@ -131,12 +134,14 @@ public class HandRequest extends AppCompatActivity {
         }
     }
 
+    //endregion
+
+    //region Send Data to Db
     public void AddToDB() {
         if (isNetworkAvailable(this) == true) {
             SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
             final String id = sharedPref.getString(config.CurrentUserID, "");
             final String STRdescription = description.getText().toString();
-//        final String hcategory = category.getSelectedItem().toString();
             final String ty = type.getText().toString();
 
             StringRequest stringRequest = new StringRequest(Request.Method.POST, config.PUT_HELP_REQUEST,
@@ -185,8 +190,20 @@ public class HandRequest extends AppCompatActivity {
         }
 
     }
+    //endregion
 
+    //region Submith Request Button Click Event
     public void onClickSubmithRequest(View view) {
+        final ProgressDialog progressDoalog;
+        progressDoalog = new ProgressDialog(this);
+        progressDoalog.setMessage("Loading....");
+        progressDoalog.setTitle("Please Wait a Second..!");
+        progressDoalog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDoalog.show();
+
         GenerateKeyword();
+
+        progressDoalog.dismiss();
     }
+    //endregion
 }
