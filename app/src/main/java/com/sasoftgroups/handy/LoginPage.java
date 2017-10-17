@@ -107,7 +107,6 @@ public class LoginPage extends AppCompatActivity {
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
         }
-
     }
 
     private void login() {

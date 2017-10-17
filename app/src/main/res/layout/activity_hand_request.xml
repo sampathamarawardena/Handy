@@ -82,7 +82,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:layout_weight="2"
-                        android:dropDownWidth="match_parent" />
+                        android:dropDownWidth="match_parent"
+                        android:textAlignment="center" />
 
                 </LinearLayout>
 
@@ -113,7 +114,7 @@
                         android:text="Public Or Ptivet"
                         android:textColor="@android:color/white"
                         android:textOff="Public"
-                        android:textOn="Privet"
+                        android:textOn="Private"
                         android:textSize="18sp" />
                 </LinearLayout>
 

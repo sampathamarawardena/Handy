@@ -49,7 +49,7 @@
                     android:layout_marginTop="10dp"
                     android:text="Your Name"
                     android:textAlignment="center"
-                    android:textColor="?android:attr/colorEdgeEffect"
+                    android:textColor="@android:color/background_dark"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 

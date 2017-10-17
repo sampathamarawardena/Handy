@@ -157,6 +157,7 @@ public class oneChat extends AppCompatActivity {
         pj.parseJSON();
         GetChatData c2 = new GetChatData(this, JSON_ChatMessage.hid, JSON_ChatMessage.senderID, JSON_ChatMessage.senderName, JSON_ChatMessage.message, JSON_ChatMessage.datetime, JSON_ChatMessage.topic);
         chatLog.setAdapter(c2);
+        chatLog.setSelection(chatLog.getCount() - 1);
     }
 
     public void onClickSendMessage(View view) {

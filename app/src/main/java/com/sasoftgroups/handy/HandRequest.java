@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -25,17 +26,24 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class HandRequest extends AppCompatActivity {
 
     //region variable declaration
-    EditText topic, description;
-    String keywordsSearch = "";
-    String UTopic = "";
-    Spinner category;
-    ToggleButton type;
+    private EditText topic, description;
+    private String keywordsSearch = "";
+    private String UTopic = "";
+    private Spinner category;
+    private ToggleButton type;
+    private JSONArray result;
     //endregion
 
     //region onCreate
@@ -47,6 +55,7 @@ public class HandRequest extends AppCompatActivity {
         description = (EditText) findViewById(R.id.edt_handRequest_Description);
         category = (Spinner) findViewById(R.id.edt_handRequest_Spinner);
         type = (ToggleButton) findViewById(R.id.tb_handRequest_Type);
+        GetCategories();
     }
     //endregion
 
@@ -67,6 +76,67 @@ public class HandRequest extends AppCompatActivity {
         }
         return false;
     }
+    //endregion
+
+    //region Get AND Set Categories Dropdown
+    public void GetCategories() {
+        if (isNetworkAvailable(this) == true) {
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, config.GET_Categories,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            JSONObject j = null;
+                            try {
+                                j = new JSONObject(response);
+                                result = j.getJSONArray("result");
+                                getCategorie(result);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(HandRequest.this, error.toString(), Toast.LENGTH_LONG).show();
+                        }
+                    });
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            requestQueue.add(stringRequest);
+        } else {
+            AlertDialog.Builder builder;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+            } else {
+                builder = new AlertDialog.Builder(this);
+            }
+            builder.setTitle("INFORMATION")
+                    .setMessage("Please Check Your Internet Connection")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // continue with delete
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
+    }
+
+    private void getCategorie(JSONArray j) {
+        List<String> scorecard = new ArrayList<String>();
+        for (int i = 0; i < j.length(); i++) {
+            try {
+                JSONObject json = j.getJSONObject(i);
+                //String s = json.getString("categorie");
+                scorecard.add(json.getString("categorie"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        category.setAdapter(new ArrayAdapter<String>(HandRequest.this, android.R.layout.simple_spinner_dropdown_item, scorecard));
+    }
+
     //endregion
 
     //region Generate Keyword

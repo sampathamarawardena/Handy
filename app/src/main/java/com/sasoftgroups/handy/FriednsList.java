@@ -323,6 +323,7 @@ public class FriednsList extends AppCompatActivity implements TabLayout.OnTabSel
                     public void onResponse(String response) {
                         progressDoalog.dismiss();
                         Toast.makeText(FriednsList.this, "Friend Request Sent", Toast.LENGTH_LONG).show();
+                        GetAllUsers();
                     }
                 },
                 new Response.ErrorListener() {
@@ -442,6 +443,7 @@ public class FriednsList extends AppCompatActivity implements TabLayout.OnTabSel
                         @Override
                         public void onResponse(String response) {
                             Toast.makeText(FriednsList.this, "Friend Request Accepted", Toast.LENGTH_LONG).show();
+                            GetAllFriendRequests();
                         }
                     },
                     new Response.ErrorListener() {

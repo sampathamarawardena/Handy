@@ -43,6 +43,8 @@ public class config {
 
     public static final String GET_PROFILE_DATA = "http://sasoftgroups.com/handy/GET_MYPROFILE_DATA.php";
 
+    public static final String GET_Categories = "http://www.sasoftgroups.com/handy/GET_Categories.php";
+
 
     public static final String CurrentUserID = "id";
     public static final String LOGIN_FAIL = "failure";

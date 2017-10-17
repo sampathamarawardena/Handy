@@ -35,6 +35,7 @@ public class JSON_ChatMessage {
     }
 
     protected void parseJSON() {
+
         JSONObject jsonObject = null;
         try {
             jsonObject = new JSONObject(json);
@@ -57,6 +58,7 @@ public class JSON_ChatMessage {
                 datetime[i] = jo.getString(KEY_DIS);
                 topic[i] = jo.getString(KEY_TOPIC);
             }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
