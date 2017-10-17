@@ -70,7 +70,9 @@ public class RegisterPartTwo extends AppCompatActivity {
     @Override
     protected Dialog onCreateDialog(int id) {
         if (id == DIALOG_ID) {
-            return new DatePickerDialog(this, datePicker, year, month, day);
+            DatePickerDialog datePickerDialog = new DatePickerDialog(this, datePicker, year, month, day);
+            datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
+            return datePickerDialog;
         } else {
             return null;
         }
@@ -107,7 +109,7 @@ public class RegisterPartTwo extends AppCompatActivity {
         final String keys = keyword.getText().toString();
         final String birth = dob.getText().toString();
 
-        if (keys.isEmpty() || birth.isEmpty()) {
+        if (!keys.isEmpty() || !birth.isEmpty()) {
             if (isNetworkAvailable(this) == true) {
                 final ProgressDialog progressDoalog;
                 progressDoalog = new ProgressDialog(this);
