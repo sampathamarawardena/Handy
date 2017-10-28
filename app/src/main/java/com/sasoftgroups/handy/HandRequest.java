@@ -123,18 +123,17 @@ public class HandRequest extends AppCompatActivity {
     }
 
     private void getCategorie(JSONArray j) {
-        List<String> scorecard = new ArrayList<String>();
+        List<String> CatList = new ArrayList<String>();
         for (int i = 0; i < j.length(); i++) {
             try {
                 JSONObject json = j.getJSONObject(i);
-                //String s = json.getString("categorie");
-                scorecard.add(json.getString("categorie"));
+                CatList.add(json.getString("categorie"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
 
-        category.setAdapter(new ArrayAdapter<String>(HandRequest.this, android.R.layout.simple_spinner_dropdown_item, scorecard));
+        category.setAdapter(new ArrayAdapter<String>(HandRequest.this, android.R.layout.simple_spinner_dropdown_item, CatList));
     }
 
     //endregion
@@ -213,6 +212,7 @@ public class HandRequest extends AppCompatActivity {
             final String id = sharedPref.getString(config.CurrentUserID, "");
             final String STRdescription = description.getText().toString();
             final String ty = type.getText().toString();
+            final String cat = category.getSelectedItem().toString();
 
             StringRequest stringRequest = new StringRequest(Request.Method.POST, config.PUT_HELP_REQUEST,
                     new Response.Listener<String>() {
@@ -235,7 +235,7 @@ public class HandRequest extends AppCompatActivity {
                     params.put("str_topic", UTopic);
                     params.put("str_discription", STRdescription);
                     params.put("str_keywords", keywordsSearch);
-                    params.put("str_catagory", "test");
+                    params.put("str_catagory", cat);
                     return params;
                 }
             };

@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -67,15 +68,17 @@ public class MyProfile extends AppCompatActivity {
 
     //region Get User Profile Data
     public void GetMyProfileData() {
-        if (isNetworkAvailable(this) == true) {
+        if (isNetworkAvailable(this)) {
             final ProgressDialog progressDoalog;
             progressDoalog = new ProgressDialog(this);
             progressDoalog.setMessage("Loading....");
             progressDoalog.setTitle("Please Wait a Second..!");
             progressDoalog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progressDoalog.show();
+
             SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
             final String id = sharedPref.getString(config.CurrentUserID, "");
+
             StringRequest stringRequest = new StringRequest(Request.Method.POST, config.GET_PROFILE_DATA,
                     new Response.Listener<String>() {
                         @Override
@@ -121,19 +124,105 @@ public class MyProfile extends AppCompatActivity {
 
     public void SetDataToView(String data) {
         String[] splited = data.split("%");
-        Helps.setText(splited[6].trim());
-        rate.setText(splited[5].trim());
 
         name.setText(splited[1].trim());
+        TXNAME.setText(splited[1].trim());
         Email.setText(splited[2].trim());
         Phone.setText(splited[3].trim());
         Keys.setText(splited[4].trim());
-        TXNAME.setText(splited[1].trim());
+        rate.setText(splited[5].trim());
+        Helps.setText(splited[6].trim());
+
     }
 
     //endregion
 
     public void UpdateMyProfileData() {
+        final String Name = name.getText().toString();
+        final String email = Email.getText().toString();
+        final String phone = Phone.getText().toString();
+        final String keys = Keys.getText().toString();
 
+
+        if (!Name.equals("") && !email.equals("") && !phone.equals("") && !keys.equals("")) {
+            if (isNetworkAvailable(this)) {
+                final ProgressDialog progressDoalog;
+                progressDoalog = new ProgressDialog(this);
+                progressDoalog.setMessage("Loading....");
+                progressDoalog.setTitle("Please Wait a Second..!");
+                progressDoalog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDoalog.show();
+
+                SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                final String id = sharedPref.getString(config.CurrentUserID, "");
+
+                StringRequest stringRequests = new StringRequest(Request.Method.POST, config.UPDATE_MYProfile,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                progressDoalog.setTitle("Getting Profile Data...");
+                                GetMyProfileData();
+                                progressDoalog.dismiss();
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(MyProfile.this, error.getMessage(), Toast.LENGTH_LONG).show();
+                                progressDoalog.dismiss();
+                            }
+                        }) {
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("id", id);
+                        params.put("Name", Name);
+                        params.put("email", email);
+                        params.put("phone", phone);
+                        params.put("keys", keys);
+                        return params;
+                    }
+
+                };
+                RequestQueue requestQueue = Volley.newRequestQueue(this);
+                requestQueue.add(stringRequests);
+
+            } else {
+                AlertDialog.Builder builder;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+                } else {
+                    builder = new AlertDialog.Builder(this);
+                }
+                builder.setTitle("INFORMATION")
+                        .setMessage("Please Check Your Internet Connection")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            }
+        } else {
+            AlertDialog.Builder builder;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+            } else {
+                builder = new AlertDialog.Builder(this);
+            }
+            builder.setTitle("INFORMATION")
+                    .setMessage("Some Fields are missing. Please recheck the details.")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
+
+    }
+
+    public void onClickSaveChanges(View view) {
+        UpdateMyProfileData();
     }
 }

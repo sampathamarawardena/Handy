@@ -58,7 +58,6 @@ public class GiveHand extends AppCompatActivity {
         return false;
     }
 
-
     //region Get All Help Requests
     private void getAllHelpRequests() {
         if (isNetworkAvailable(this) == true) {
@@ -106,7 +105,6 @@ public class GiveHand extends AppCompatActivity {
                     .setMessage("Please Check Your Internet Connection")
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            // continue with delete
                         }
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
@@ -138,8 +136,10 @@ public class GiveHand extends AppCompatActivity {
 
             final String tv_Helps_hid = items.toString();
             Toast.makeText(GiveHand.this, tv_Helps_hid, Toast.LENGTH_SHORT).show();
+
             SharedPreferences sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
             final String id = sharedPref.getString(config.CurrentUserID, "");
+
             StringRequest stringRequest = new StringRequest(Request.Method.POST, config.ACCEPT_HELP_REQUEST,
                     new Response.Listener<String>() {
                         @Override
